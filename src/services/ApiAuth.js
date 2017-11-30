@@ -50,8 +50,8 @@ export const getToken = (login, pass) => {
 			headers: API_HEADER(),
 			method: 'POST',
 			body: JSON.stringify({
-				"login": login,
-				"pass": pass
+				'login': login,
+				'pass': pass
 			})
 		})
 			.then(resp => {
@@ -62,12 +62,16 @@ export const getToken = (login, pass) => {
 					resolve(body)
 				} else {
 					localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
-					reject("no-auth")
+					reject('no-auth')
 				}
 			})
 			.catch(e => { 
 				localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
-				reject("no-auth") 
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject('no-auth') 
 			})
 	})
 }

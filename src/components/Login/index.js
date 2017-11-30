@@ -27,10 +27,10 @@ class UserLogin extends React.Component {
 		this.state = {
 			redirectLogin: false,
 			validationState: null,
-			errorString: "",
+			errorString: '',
 			formValues: {
-				login: "",
-				pass: ""
+				login: '',
+				pass: ''
 			}
 		}
 	}
@@ -66,10 +66,10 @@ class UserLogin extends React.Component {
 
 	validate(login, pass) {
 		if(_.size(login) < 3 || _.size(pass) < 3) {
-			this.setState({validationState: "error", formValues: {login: "", pass: ""}})
+			this.setState({validationState: 'error', formValues: {login: '', pass: ''}})
 			return false
 		} else {
-			this.setState({validationState: null, formValues: {login: "", pass: ""}})
+			this.setState({validationState: null, formValues: {login: '', pass: ''}})
 			return true
 		}
 	}
@@ -83,12 +83,15 @@ class UserLogin extends React.Component {
 				.then(resp => {
 					if (resp.token) {
 						localStorage.setItem(consts.LOCALSTORAGE_TOKEN, resp.token)
-						this.setState({errorString: "", validationState: null, formValues: {login: "", pass: ""}})
+						this.setState({errorString: '', validationState: null, formValues: {login: '', pass: ''}})
 						this.props.history.push('/', null)
 					}
 				})
 				.catch(e => {
-					this.setState({errorString: "Błąd logowania.", validationState: "error", formValues: {login: "", pass: ""}})
+					if (e == 'server-down')
+						this.setState({errorString: 'Brak połączenia.', validationState: null, formValues: {login: '', pass: ''}})
+					else
+						this.setState({errorString: 'Błąd logowania.', validationState: 'error', formValues: {login: '', pass: ''}})
 				})
 		}
 	}
@@ -96,7 +99,7 @@ class UserLogin extends React.Component {
 	render() {
 
 		return (
-			<div className="loginContainer">
+			<div className='loginContainer'>
 				<Grid>
 					<Row>
 						<Col 
@@ -107,29 +110,29 @@ class UserLogin extends React.Component {
 
 							<Panel header={loginPanelTitle}>
 
-								<Image className="loginImage" src="http://via.placeholder.com/200x100" rounded />
+								<Image className='loginImage' src='http://via.placeholder.com/200x100' rounded />
 
-									<FormGroup controlId="signup_login" validationState={this.state.validationState}>
+									<FormGroup controlId='signup_login' validationState={this.state.validationState}>
 										<FormControl 
-											type="text" 
-											placeholder="Login"
+											type='text' 
+											placeholder='Login'
 											value={this.state.formValues.login} 
 											onChange={this.handleInput}
 											onKeyPress={this.handleInput} />
 									</FormGroup>
 									
-									<FormGroup controlId="signup_pass" validationState={this.state.validationState}>
+									<FormGroup controlId='signup_pass' validationState={this.state.validationState}>
 										<FormControl 
-											type="password" 
-											placeholder="Password" 
+											type='password' 
+											placeholder='Password' 
 											value={this.state.formValues.pass} 
 											onChange={this.handleInput}
 											onKeyPress={this.handleInput} />
 									</FormGroup>
 
-									<span className="errMsg"> {this.state.errorString} </span>
+									<span className='errMsg'> {this.state.errorString} </span>
 									
-									<Button className="loginButton" onClick={this.tryLogIn}>Zaloguj</Button>
+									<Button className='loginButton' onClick={this.tryLogIn}>Zaloguj</Button>
 							</Panel>
 						</Col>
 					</Row>
