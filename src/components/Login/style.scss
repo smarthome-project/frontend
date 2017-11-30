@@ -1,0 +1,25 @@
+.loginContainer {
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: 100vh;
+	width: 100vw;
+	padding-top: 10vh;
+	background-color: #171717;
+
+	.loginImage {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.loginButton {
+		float: right;
+		width: 50%;
+	}
+
+	.errMsg {
+		color: #C10004;
+	}
+}

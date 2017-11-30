@@ -1,0 +1,49 @@
+
+.weather {
+	
+	position: absolute;
+	top: 100px;
+	left: 100px;
+
+	.weather__header {
+		font-size: 4rem;
+		color: #6B6F70;
+	}
+
+	.weather__current {
+
+		position: relative;
+		border: solid 1px #595C5D;
+		border-radius: 3px;
+		padding: 20px;
+		min-width: 400px;
+		background-color: rgba(0,0,0, 0.2);
+
+		.weather__current__image {
+			display: inline-block;
+			min-height: 140px;
+			min-width: 160px;
+		}
+
+		.weather__current__temp {
+			border-bottom: solid 1px rgba(240,240,240, 0.3);
+			display: inline-block;
+			position: absolute;
+			top: 0px; right: 20px;
+			color: #EEE;
+		}
+
+		.weather__current__summary {
+			margin-top: 10px;
+			border-top: solid 1px rgba(240,240,240, 0.3);
+			padding-top: 5px;
+			font-size: 26px;
+			color: #DDD;
+		}
+	}
+
+	.weather__next-days {
+
+	}
+
+}

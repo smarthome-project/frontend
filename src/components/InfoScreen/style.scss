@@ -1,0 +1,29 @@
+.screenInfoContainer {
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	width: 100vw;
+	height: 100vh;
+	background-color: #262626;
+	color: #D9D9D9;
+}
+
+.weatherContainer-enter {
+	opacity: 0.01;
+}
+
+.weatherContainer-enter.weatherContainer-enter-active {
+	opacity: 1;
+	transition: opacity .5s ease-in;
+}
+
+.weatherContainer-exit {
+	opacity: 1;
+}
+
+.weatherContainer-exit.weatherContainer-exit-active {
+	opacity: 0.01;
+	transition: opacity .3s ease-in;
+}

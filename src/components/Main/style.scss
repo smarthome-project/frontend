@@ -1,0 +1,23 @@
+.mainContainer {
+	margin-top: 50px;
+}
+
+.mainTransition-enter {
+	opacity: 0.01;
+}
+
+.mainTransition-enter.mainTransition-enter-active {
+	opacity: 1;
+	transition: opacity .7s ease-in;
+	-webkit-transition: opacity .7s ease-in;
+}
+
+.mainTransition-leave {
+	opacity: 1;
+}
+
+.mainTransition-leave.mainTransition-leave-active {
+	opacity: 0.01;
+	transition: opacity .2s ease-out;
+	-webkit-transition: opacity .2s ease-out;
+}
