@@ -1,5 +1,6 @@
 import config from '../utils/config'
 import consts from '../utils/constants'
+import CryptoJS from 'crypto-js'
 
 const API_URL = `http://${location.hostname}:${config.serverPort}`
 
@@ -45,13 +46,16 @@ export const checkToken = () => {
 }
 
 export const getToken = (login, pass) => {
+
+	const hashPass = CryptoJS.SHA512(pass).toString(CryptoJS.enc.Base64)
+
 	return new Promise((resolve, reject) => {
 		fetch(`${API_URL}/api/tokens`, {
 			headers: API_HEADER(),
 			method: 'POST',
 			body: JSON.stringify({
 				'login': login,
-				'pass': pass
+				'pass': hashPass
 			})
 		})
 			.then(resp => {
