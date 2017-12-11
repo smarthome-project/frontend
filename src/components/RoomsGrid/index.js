@@ -106,7 +106,6 @@ class RoomsGrid extends React.Component {
 					<AddRoomModal 
 						showModal={this.state.modalShow} 
 						imagesSet={this.state.imagesSet}
-						callbackSave={this.handleSave_addDev}
 						callbackClose={this.closeModal} />
 				</div>
 			)

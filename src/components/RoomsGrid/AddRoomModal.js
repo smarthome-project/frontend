@@ -16,11 +16,16 @@ class AddRoomModal extends React.Component {
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSave = this.handleSave.bind(this)
 		this.handleClose = this.handleClose.bind(this)
+		
+		this.state = {}
+	}
 
-		this.state = {
-			roomName: "",
-			imagePath: ""
-		}
+	componentWillReceiveProps(nextProps) {
+		if (this.props.showModal == false && nextProps.showModal == true)
+			this.setState({
+				roomName: "",
+				imagePath: ""
+			})
 	}
 
 	handleChange(field, val) {
@@ -38,7 +43,7 @@ class AddRoomModal extends React.Component {
 
 	render() {
 		return (
-			<Modal show={this.props.showModal} onHide={this.props.callbackClose}>
+			<Modal show={this.props.showModal} onHide={this.handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Dodawanie pomieszczenia</Modal.Title>
 				</Modal.Header>
@@ -49,8 +54,8 @@ class AddRoomModal extends React.Component {
 						handleChange={this.handleChange} />
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={this.handleSave}>Save</Button>
-					<Button onClick={this.handleSave}>Close</Button>
+					<Button onClick={this.handleSave}>Zapisz</Button>
+					<Button onClick={this.handleClose}>Anuluj</Button>
 				</Modal.Footer>
 			</Modal>
 		)

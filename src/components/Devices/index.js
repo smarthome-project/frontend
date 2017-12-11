@@ -53,8 +53,7 @@ class Devices extends React.Component {
 					{header}
 					{devices}
 					<AddDeviceModal 
-						showModal={this.state.modalShow} 
-						callbackSave={this.handleSave_addDev}
+						showModal={this.state.modalShow}
 						callbackClose={this.closeModal} />
 				</div>
 			)

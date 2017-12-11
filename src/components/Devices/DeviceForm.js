@@ -38,6 +38,8 @@ class DeviceForm extends React.Component {
 							<FormControl 
 								type="number" 
 								placeholder="Num"
+								min={1}
+								max={100}
 								onChange={this.handleChange.bind(this, 'inputNum')}
 								value={this.props.formData.inputNum} />
 						</FormGroup>

@@ -16,16 +16,22 @@ class AddDeviceModal extends React.Component {
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSave = this.handleSave.bind(this)
 		this.handleClose = this.handleClose.bind(this)
+		
+		this.state = {}
+	}
 
-		this.state = {
-			deviceName: "",
-			inputNum: 0,
-			deviceType: "",
-			roomId: 0
-		}
+	componentWillReceiveProps(nextProps) {
+		if (this.props.showModal == false && nextProps.showModal == true)
+			this.setState({
+				deviceName: "",
+				inputNum: 1,
+				deviceType: "",
+				roomId: 0
+			})
 	}
 
 	handleChange(field, val) {
+		val = (field == 'inputNum') ? Number(val) : val
 		this.setState({[field]: val})
 	}
 
@@ -40,7 +46,7 @@ class AddDeviceModal extends React.Component {
 
 	render() {
 		return (
-			<Modal show={this.props.showModal} onHide={this.props.callbackClose}>
+			<Modal show={this.props.showModal} onHide={this.handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Dodawanie urządzenia</Modal.Title>
 				</Modal.Header>
@@ -50,8 +56,8 @@ class AddDeviceModal extends React.Component {
 						handleChange={this.handleChange} />
 				</Modal.Body>
 				<Modal.Footer>
-					<Button onClick={this.handleSave}>Save</Button>
-					<Button onClick={this.handleSave}>Close</Button>
+					<Button onClick={this.handleSave}>Zapisz</Button>
+					<Button onClick={this.handleClose}>Anuluj</Button>
 				</Modal.Footer>
 			</Modal>
 		)
