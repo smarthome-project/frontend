@@ -39,7 +39,7 @@ class SchedulerList extends React.Component {
 			<div>
 				<PageHeader>
 					Harmonogramy 
-					<small>automatyzacja zadań.</small> 
+					<small> automatyzacja zadań.</small> 
 					<Button className="pull-right addButton" componentClass={Link} href="/scheduler/add" to="/scheduler/add">
 						<Icon name="plus" size={1} />
 					</Button>
