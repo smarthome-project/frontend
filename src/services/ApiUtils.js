@@ -18,6 +18,19 @@ function handleErrors(resp) {
 
 export const getImages = () => {
 	return new Promise((resolve, reject) => {
-		resolve([])
+
+		fetch(`${API_URL}/api/images`, {
+			headers: API_HEADER(),
+			method: 'GET'
+		})
+			.then(resp => {
+				if (resp.status == 401)
+					reject('no-auth')
+				else
+					resolve(resp.json())
+			})
+			.catch(e => {
+				reject(e) 
+			})
 	})
 }

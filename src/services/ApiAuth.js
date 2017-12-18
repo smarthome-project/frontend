@@ -49,6 +49,8 @@ export const getToken = (login, pass) => {
 
 	const hashPass = CryptoJS.SHA512(pass).toString(CryptoJS.enc.Base64)
 
+	//console.log(hashPass)
+
 	return new Promise((resolve, reject) => {
 		fetch(`${API_URL}/api/tokens`, {
 			headers: API_HEADER(),

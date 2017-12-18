@@ -12,10 +12,18 @@ import { FormGroup, ControlLabel, FormControl, DropdownButton, ButtonGroup, Menu
 class ImageSelecter extends React.Component {
 
 	render () {
-
-		let nameSelected = (this.props.selectedId) ? (this.props.imagesSet[this.props.selectedId]).name || "Wybierz obrazek" : "Wybierz obrazek"
-		let menuItems = _.map(this.props.imagesSet, (img, i) => 
-			<MenuItem eventKey={i}><img src={img.src} /></MenuItem> )
+		let nameSelected = (this.props.selectedId !== undefined) ? (this.props.imagesSet[this.props.selectedId]).name || "Wybierz obrazek" : "Wybierz obrazek"
+		let menuItems = _.map(this.props.imagesSet, (img, i) => {
+				const img_url = require(`../../assets/images/usable/${img.path}`)
+				return (
+					<MenuItem 
+						key={i} 
+						eventKey={i}
+						onClick={this.props.handleImage.bind(this, img.path, i)}>
+						<img src={img_url} />
+					</MenuItem>
+				)
+			})
 
 		return (
 			<DropdownButton title={nameSelected} id="ImageSelecter">
@@ -27,7 +35,8 @@ class ImageSelecter extends React.Component {
 
 ImageSelecter.propTypes = {
 	imagesSet: PropTypes.array,
-	selectedId: PropTypes.number
+	selectedId: PropTypes.number,
+	handleImage: PropTypes.func.isRequired
 }
 
 
@@ -37,19 +46,28 @@ class RoomForm extends React.Component {
 		this.props.handleChange(field, evt.target.value)
 	}
 
+	handleImage(image_path, idx) {
+		console.log(image_path, idx)
+		this.props.handleChange('imagePath', image_path)
+		this.props.handleChange('imageId', idx)
+	}
+
 	render() {
 		return (
-			<form>
-				<FormGroup controlId="roomForm_roomName">
-					<ControlLabel>Nazwa pomieszczenia</ControlLabel>
-					<FormControl 
-						type="text" 
-						placeholder="Nazwa pomieszczenia"
-						onChange={this.handleChange.bind(this, 'roomName')}
-						value={this.props.formData.roomName} />
-				</FormGroup>
+			<form onSubmit={e => { e.preventDefault() }}>
+					<FormGroup controlId="roomForm_roomName">
+						<ControlLabel>Nazwa pomieszczenia</ControlLabel>
+						<FormControl 
+							type="text" 
+							placeholder="Nazwa pomieszczenia"
+							onChange={this.handleChange.bind(this, 'roomName')}
+							value={this.props.formData.roomName} />
+					</FormGroup>
 
-				<ImageSelecter imagesSet={this.props.imagesSet} selectedId={this.props.formData.imageId} />
+					<ImageSelecter 
+						handleImage={this.handleImage.bind(this)}
+						imagesSet={this.props.imagesSet}
+						selectedId={this.props.formData.imageId} />
 			</form>
 		)
 	}

@@ -20,12 +20,14 @@ class RoomPanel extends React.Component {
 			.filter(dev => dev.roomId == roomObj.id)
 			.size()
 
+		let img_url = require(`../../assets/images/usable/${roomObj.image_path}`)
+
 		return (
 				<Col xs={12} sm={6} md={4} lg={4}>
 					<Panel>
 						<Link to={"/room/" + roomObj.id} >
 							<div className="crop-img">
-								<Image src={roomObj.img} />
+								<Image src={img_url} />
 								<div className="title">
 									{roomObj.name}
 								</div>
@@ -64,7 +66,9 @@ class RoomsGrid extends React.Component {
 
 	componentDidMount() {
 		getImages()
-			.then(imagesDataset => this.setState({imagesSet: imagesDataset}))
+			.then(imagesDataset => {
+				this.setState({imagesSet: imagesDataset})
+			})
 			.catch(e => console.log('Błąd połączenia z API', e))
 	}
 
@@ -106,6 +110,7 @@ class RoomsGrid extends React.Component {
 					<AddRoomModal 
 						showModal={this.state.modalShow} 
 						imagesSet={this.state.imagesSet}
+						roomCallbacks={this.props.roomCallbacks}
 						callbackClose={this.closeModal} />
 				</div>
 			)

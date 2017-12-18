@@ -24,7 +24,8 @@ class AddRoomModal extends React.Component {
 		if (this.props.showModal == false && nextProps.showModal == true)
 			this.setState({
 				roomName: "",
-				imagePath: ""
+				imagePath: "",
+				imageId: undefined
 			})
 	}
 
@@ -34,6 +35,12 @@ class AddRoomModal extends React.Component {
 
 	handleSave() {
 		console.log(this.state)
+		
+		this.props.roomCallbacks.handleAddRoom({
+			name: this.state.roomName,
+			image_path: this.state.imagePath
+		})
+
 		this.props.callbackClose()
 	}
 
@@ -65,6 +72,7 @@ class AddRoomModal extends React.Component {
 AddRoomModal.propTypes = {
 	showModal: PropTypes.bool.isRequired,
 	callbackClose: PropTypes.func.isRequired,
+	roomCallbacks: PropTypes.object.isRequired,
 	imagesSet: PropTypes.array
 }
 

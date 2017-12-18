@@ -16,10 +16,53 @@ function handleErrors(resp) {
 	return resp
 }
 
-
-
 export const getRooms = () => {
 	return new Promise((resolve, reject) => {
-		resolve(roomsFakeData)
+		fetch(`${API_URL}/api/rooms`, {
+			headers: API_HEADER(),
+			method: 'GET'
+		})
+			.then(resp => {
+				if (resp.status === 200) {
+					const body = resp.json() || []
+					resolve(body)
+				} else {
+					reject(resp)
+				}
+			})
+			.catch(e => { 
+				localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject(e) 
+			})
+	})
+}
+
+export const createRooms = (room) => {
+	return new Promise((resolve, reject) => {
+		fetch(`${API_URL}/api/rooms`, {
+			headers: API_HEADER(),
+			method: 'POST',
+			body: JSON.stringify(room)
+		})
+			.then(resp => {
+				if (resp.status === 201) {
+					const body = resp.json() || []
+					resolve(body)
+				} else {
+					reject(resp)
+				}
+			})
+			.catch(e => { 
+				localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject(e) 
+			})
 	})
 }

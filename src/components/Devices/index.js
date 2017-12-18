@@ -3,6 +3,8 @@ import ReactDom from 'react-dom'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
+import { getDeviceTypes } from '../../services/ApiDevices'
+
 import AddDeviceModal from './AddDeviceModal'
 import SingleDevice from './SingleDevice'
 
@@ -18,8 +20,15 @@ class Devices extends React.Component {
 		this.openModal = this.openModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
 		this.state = {
-			modalShow: false
+			modalShow: false,
+			deviceTypeEnums: []
 		}
+	}
+
+	componentDidMount() {
+		getDeviceTypes()
+			.then(deviceTypes => { this.setState({deviceTypeEnums: deviceTypes}) })
+			.catch(e => { this.props.history.push('/login', null) })
 	}
 
 	openModal() {
@@ -54,6 +63,8 @@ class Devices extends React.Component {
 					{devices}
 					<AddDeviceModal 
 						showModal={this.state.modalShow}
+						deviceTypeEnums={this.state.deviceTypeEnums}
+						deviceCallbacks={this.props.deviceCallbacks}
 						callbackClose={this.closeModal} />
 				</div>
 			)

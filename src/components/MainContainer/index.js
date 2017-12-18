@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 import { GuardRoute } from '../shared/GuardRoute'
+import update from 'immutability-helper'
 
 import Main from '../Main'
 import LockScreen from '../LockScreen'
@@ -13,8 +14,8 @@ import {
 
 import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
-import { getRooms } from '../../services/ApiRooms'
-import { getDevices } from '../../services/ApiDevices'
+import { getRooms, createRooms } from '../../services/ApiRooms'
+import { getDevices, createDevice } from '../../services/ApiDevices'
 
 
 class MainContainer extends React.Component {
@@ -29,6 +30,9 @@ class MainContainer extends React.Component {
 		this.timeToInactive = 1000 * 30
 		this.inActiveTimer = null
 
+		this.handleAddRoom = this.handleAddRoom.bind(this)
+		this.handleAddDevice = this.handleAddDevice.bind(this)
+
 		this.state = {
 			user: {},
 			rooms: [],
@@ -42,6 +46,10 @@ class MainContainer extends React.Component {
 		this.resetInactiveTimer()
 	}
 
+	/*=========================================
+	=            Component methods            =
+	=========================================*/
+
 	componentDidMount() {
 		checkToken()
 			.then(usr => { this.setState({user: usr}) })
@@ -49,7 +57,7 @@ class MainContainer extends React.Component {
 
 		checkAlarmState()
 			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
-			.catch(e => { console.log(e); this.props.history.push('/login', null) })
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 
 		getRooms()
 			.then(rooms => { this.setState({rooms: rooms}) })
@@ -81,16 +89,52 @@ class MainContainer extends React.Component {
 			this.setState({appState: consts.STATE_ACTIVE})
 	}
 
+
+	/*============================================
+	=            Handlers / callbacks            =
+	============================================*/
+
+	//Alarms
+
 	handleCheckNewAlarmState() {
 		checkAlarmState()
 			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
-			.catch(e => { console.log(e); this.props.history.push('/login', null) })
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleActiveAlarm() {
 		this.setState({alarmActive: true})
 	}
 
+	//Users
+
+
+	//Rooms
+	handleAddRoom(room) {
+		createRooms(room)
+			.then(newRoom => {
+				this.setState(
+					update(this.state, {rooms: {$push: [newRoom]}})
+				) 
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
+	//Devices
+	handleAddDevice(device) {
+		createDevice(device)
+			.then(newDevice => { 
+				this.setState(
+					update(this.state, {devices: {$push: [newDevice]}})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
+	/*==============================
+	=            Render            =
+	==============================*/
+	
 	render() {
 		return (this.state.alarmActive) ? (
 			<LockScreen handleCheckNewAlarmState={this.handleCheckNewAlarmState} />
@@ -99,8 +143,12 @@ class MainContainer extends React.Component {
 				user={this.state.user}
 				rooms={this.state.rooms}
 				devices={this.state.devices}
-				roomCallbacks={{}}
-				deviceCallbacks={{}}
+				roomCallbacks={{
+					handleAddRoom: this.handleAddRoom
+				}}
+				deviceCallbacks={{
+					handleAddDevice: this.handleAddDevice
+				}}
 				alarmCallbacks={{
 					handleActiveAlarm: this.handleActiveAlarm
 				}} />

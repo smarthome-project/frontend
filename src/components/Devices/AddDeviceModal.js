@@ -23,20 +23,29 @@ class AddDeviceModal extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (this.props.showModal == false && nextProps.showModal == true)
 			this.setState({
-				deviceName: "",
-				inputNum: 1,
-				deviceType: "",
+				name: "",
+				input_id: 1,
+				type: "POWER",
 				roomId: 0
 			})
 	}
 
 	handleChange(field, val) {
-		val = (field == 'inputNum') ? Number(val) : val
+		val = (field == 'input_id') ? Number(val) : val
 		this.setState({[field]: val})
 	}
 
 	handleSave() {
 		console.log(this.state)
+		
+		this.props.deviceCallbacks.handleAddDevice({
+			input_id: this.state.input_id,
+			room_id: this.state.room_id,
+			name: this.state.name,
+			type: this.state.type,
+			img: ""
+		})
+
 		this.props.callbackClose()
 	}
 
@@ -53,6 +62,7 @@ class AddDeviceModal extends React.Component {
 				<Modal.Body>
 					<DeviceForm 
 						formData={this.state} 
+						deviceTypeEnums={this.props.deviceTypeEnums}
 						handleChange={this.handleChange} />
 				</Modal.Body>
 				<Modal.Footer>
@@ -66,6 +76,8 @@ class AddDeviceModal extends React.Component {
 
 AddDeviceModal.propTypes = {
 	showModal: PropTypes.bool.isRequired,
+	deviceTypeEnums: PropTypes.array.isRequired,
+	deviceCallbacks: PropTypes.object.isRequired,
 	callbackClose: PropTypes.func.isRequired
 }
 
