@@ -44,7 +44,10 @@ class Devices extends React.Component {
 		const roomId = this.props.roomId || null
 		let filteredDevices = (roomId) ? _.filter(this.props.devices, d => d.roomId == roomId) : this.props.devices
 		let devices = _.map(filteredDevices, device => (
-				<SingleDevice key={device.id} device={device}/>
+				<SingleDevice 
+					key={device.id} 
+					device={device}
+					deviceCallbacks={this.props.deviceCallbacks} />
 			))
 
 		const header = (

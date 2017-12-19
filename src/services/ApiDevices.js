@@ -1,6 +1,5 @@
 import config from '../utils/config'
 import consts from '../utils/constants'
-import { devicesFakeData, deviceTypesFakeData } from '../assets/fakeData/data'
 
 const API_URL = `http://${location.hostname}:${config.serverPort}`
 
@@ -83,6 +82,37 @@ export const createDevice = (device) => {
 			})
 			.catch(e => { 
 				localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject(e) 
+			})
+	})
+}
+
+export const changeStateDevice = (device, newState) => {
+	return new Promise((resolve, reject) => {
+		fetch(`${API_URL}/api/devices/${device.id}`, {
+			headers: API_HEADER(),
+			mode: 'cors',
+			method: 'PUT',
+			body: JSON.stringify({
+				state: newState
+			})
+		})
+			.then(resp => {
+				if (resp.status === 200) {
+					const body = resp.json() || []
+					resolve(body)
+				} else {
+					reject(resp)
+				}
+			})
+			.catch(e => { 
+				//localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
+
+				console.log(e)
 
 				if (e.message == 'NetworkError when attempting to fetch resource.')
 					reject('server-down')

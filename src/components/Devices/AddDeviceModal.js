@@ -36,13 +36,17 @@ class AddDeviceModal extends React.Component {
 	}
 
 	handleSave() {
-		console.log(this.state)
-		
+
+		const enums = this.props.deviceTypeEnums
+		const enumIndex = enums.findIndex(enu => enu.type == this.state.type)
+		const defaultState = enums[enumIndex].default
+
 		this.props.deviceCallbacks.handleAddDevice({
 			input_id: this.state.input_id,
 			room_id: this.state.room_id,
 			name: this.state.name,
 			type: this.state.type,
+			state: defaultState,
 			img: ""
 		})
 

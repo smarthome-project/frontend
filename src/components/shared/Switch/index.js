@@ -29,6 +29,7 @@ class Switch extends React.Component {
 				labelWidth={this.props.labelWidth}
 				labelText={this.props.labelText}
 				callback={this.props.callback}
+				defaultValue={this.props.value}
 				onChange={(el, state) => this.handleSwitch(el, state)} />
 				
 		)

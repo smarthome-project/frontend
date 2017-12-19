@@ -15,7 +15,7 @@ import {
 import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
 import { getRooms, createRooms } from '../../services/ApiRooms'
-import { getDevices, createDevice } from '../../services/ApiDevices'
+import { getDevices, createDevice, changeStateDevice } from '../../services/ApiDevices'
 
 
 class MainContainer extends React.Component {
@@ -32,6 +32,7 @@ class MainContainer extends React.Component {
 
 		this.handleAddRoom = this.handleAddRoom.bind(this)
 		this.handleAddDevice = this.handleAddDevice.bind(this)
+		this.handleChangeStateDevice = this.handleChangeStateDevice.bind(this)
 
 		this.state = {
 			user: {},
@@ -131,6 +132,23 @@ class MainContainer extends React.Component {
 			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 	}
 
+	handleChangeStateDevice(device, newState) {
+		changeStateDevice(device, newState)
+			.then(updatedDevice => { 
+				const deviceIndex = this.state.devices.findIndex((device) => device.id == updatedDevice.id)
+				this.setState(
+					update(this.state, {
+						devices: {
+							[deviceIndex]: {
+								state: {$set: updatedDevice.state}
+							}
+						}
+					})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
 	/*==============================
 	=            Render            =
 	==============================*/
@@ -147,7 +165,8 @@ class MainContainer extends React.Component {
 					handleAddRoom: this.handleAddRoom
 				}}
 				deviceCallbacks={{
-					handleAddDevice: this.handleAddDevice
+					handleAddDevice: this.handleAddDevice,
+					handleChangeStateDevice: this.handleChangeStateDevice
 				}}
 				alarmCallbacks={{
 					handleActiveAlarm: this.handleActiveAlarm
