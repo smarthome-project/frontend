@@ -7,6 +7,7 @@ import update from 'immutability-helper'
 import Main from '../Main'
 import LockScreen from '../LockScreen'
 import consts from '../../utils/constants'
+import _config from '../../utils/config'
 
 import { 
 	addEventUserActive, 
@@ -27,7 +28,7 @@ class MainContainer extends React.Component {
 		this.handleCheckNewAlarmState = this.handleCheckNewAlarmState.bind(this)
 
 		this.resetInactiveTimer = this.resetInactiveTimer.bind(this)
-		this.timeToInactive = 1000 * 30
+		this.timeToInactive = 1000 * _config.timeToScreensaverInSec
 		this.inActiveTimer = null
 
 		this.handleAddRoom = this.handleAddRoom.bind(this)

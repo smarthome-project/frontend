@@ -3,7 +3,11 @@ import ReactDom from 'react-dom'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
+import deviceStyle from './device-style.scss'
+
+
 import Switch from '../shared/Switch'
+import { Icon } from '../shared/Icon'
 import { SketchPicker } from 'react-color'
 import { Panel, Col, Button } from 'react-bootstrap'
 
@@ -16,7 +20,6 @@ class DevicePower extends React.Component {
 
 	render() {
 		return <div>
-			<h4 style={{margin: 0, marginBottom: 10}}>Stan urządzenia</h4>
 			<Switch 
 				bsSize="normal" 
 				value={this.props.state.active} 
@@ -94,7 +97,22 @@ class SingleDevice extends React.Component {
 	render() {
 
 		let device = this.props.device
-		const title = <h2> {device.name} </h2>
+		const title = <h2> 
+				<span className="header-name">
+					{device.name}
+				</span>
+				<span className="header-icons">
+					<a className="pull-right deviceActionHeader">
+						<Icon name="pencil" size={1} fw />
+					</a>
+					<a className="pull-right deviceActionHeader">
+						<Icon name="calendar" size={1} fw />
+					</a>
+					<a className="pull-right deviceActionHeader">
+						<Icon name="font" size={1} fw />
+					</a>
+				</span>
+			</h2>
 
 		console.log(device)
 
@@ -116,7 +134,7 @@ class SingleDevice extends React.Component {
 		}
 
 		return (device) ? (
-			<Col xs={6} sm={4} md={3}>
+			<Col xs={6} sm={4} md={4} lg={3}>
 				<Panel header={title}>
 					{controllBody}
 				</Panel>
