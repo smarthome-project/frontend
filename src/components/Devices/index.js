@@ -63,7 +63,9 @@ class Devices extends React.Component {
 		return (
 				<div>
 					{header}
-					{devices}
+					<div id="devicesGrid">
+						{devices}
+					</div>
 					<AddDeviceModal 
 						showModal={this.state.modalShow}
 						deviceTypeEnums={this.state.deviceTypeEnums}

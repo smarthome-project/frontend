@@ -8,16 +8,60 @@ import { Link } from 'react-router-dom'
 import { PageHeader, Table, Button, Grid, Row, Col } from 'react-bootstrap'
 import { Icon } from '../../shared/Icon'
 import _ from 'lodash'
-
+import CronSchedule from '../../../utils/cronTranslate'
 
 class SchedulerList extends React.Component {
 
+	getActions(scheduleId) {
+		return <span className="schedulerActions">
+			<a scheid={scheduleId}>
+				<Icon name="pencil" size={1} fw /> <span>Edytuj</span>
+			</a>
+		</span>
+	}
+
+	getActived(act) {
+		return (act) ? <span>
+				<Icon name="check" size={1} fw /> <span>Tak</span>
+			</span> : <span>
+				<Icon name="times" size={1} fw /> <span>Nie</span>
+			</span>
+	} 
+
+	getActionByState(state) {
+		
+		const naming = (key, value) => {
+			switch(key) {
+				case 'active':
+					return (value) ? 'Włącz. ' : 'Wyłącz. '
+				case 'rgb':
+					return `Ustaw kolor na ${value}. `
+			}
+		}
+
+		let actionString = ""
+
+		_.forIn(state, (val, key) => {
+			actionString += naming(key, val)
+		})
+
+		return actionString
+	}
 
 	render () {
-		const tableBody = _.map(this.props.scheduls, (sche) => <tr>
-			<td>1</td>
-			<td>2</td>
-			<td>3</td>
+		let c = new CronSchedule([false,true,false,false,false,false,false],["12", "16", "19"], ["30"])
+		c.parseCron("0 12 * * 1,3,5").then(resp => console.log(resp))
+
+		console.log(this.props.scheduls)
+
+		const tableBody = _.map(this.props.scheduls, (sche) => <tr key={sche.id}>
+			<td>{sche.id}</td>
+			<td>{sche.room_name}</td>
+			<td>{sche.device_name}</td>
+			<td>{this.getActionByState(sche.state)}</td>
+			<td>{sche.cron}</td>
+			<td>{this.getActived(sche.active)}</td>
+			<td>{this.getActions(sche.id)}</td>
 		</tr>)
 
 		const table = (
@@ -25,8 +69,12 @@ class SchedulerList extends React.Component {
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Table heading</th>
-						<th>Table heading</th>
+						<th>Pokój</th>
+						<th>Urządzenie</th>
+						<th>Akcja</th>
+						<th>Harmonogram</th>
+						<th>Aktywny</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>

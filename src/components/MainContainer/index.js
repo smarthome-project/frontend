@@ -17,6 +17,7 @@ import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
 import { getRooms, createRooms } from '../../services/ApiRooms'
 import { getDevices, createDevice, changeStateDevice } from '../../services/ApiDevices'
+import { getSchedules } from '../../services/ApiScheduls'
 
 
 class MainContainer extends React.Component {
@@ -39,6 +40,7 @@ class MainContainer extends React.Component {
 			user: {},
 			rooms: [],
 			devices: [],
+			scheduls: [],
 			alarmActive: false,
 			appState: consts.STATE_ACTIVE
 		}
@@ -67,6 +69,10 @@ class MainContainer extends React.Component {
 
 		getDevices()
 			.then(devices => { this.setState({devices: devices}) })
+			.catch(e => console.log(e))
+
+		getSchedules()
+			.then(scheduls => { this.setState({scheduls: scheduls}) })
 			.catch(e => console.log(e))
 
 		addEventUserActive(this._handleActivity)
@@ -162,6 +168,7 @@ class MainContainer extends React.Component {
 				user={this.state.user}
 				rooms={this.state.rooms}
 				devices={this.state.devices}
+				scheduls={this.state.scheduls}
 				roomCallbacks={{
 					handleAddRoom: this.handleAddRoom
 				}}
