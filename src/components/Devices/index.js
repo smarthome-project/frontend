@@ -69,6 +69,7 @@ class Devices extends React.Component {
 					<AddDeviceModal 
 						showModal={this.state.modalShow}
 						rooms={this.props.rooms}
+						currentRoomId={this.props.room_id}
 						deviceTypeEnums={this.state.deviceTypeEnums}
 						deviceCallbacks={this.props.deviceCallbacks}
 						callbackClose={this.closeModal} />

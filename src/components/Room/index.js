@@ -27,6 +27,7 @@ class Room extends React.Component {
 							mainTitle: room.name
 						}}
 						devices={this.props.devices} 
+						rooms={this.props.rooms}
 						deviceCallbacks={this.props.deviceCallbacks} />
 				</div>
 			</div>

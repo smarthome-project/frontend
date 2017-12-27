@@ -14,11 +14,11 @@ class DeviceForm extends React.Component {
 	render() {
 
 		let deviceType_options = (this.props.deviceTypeEnums) ? _.map( this.props.deviceTypeEnums, (typEnum, i) => 
-			<option key={i} value={typEnum.type}>{typEnum.pl_name}</option> ) : null
+			<option key={`d_${i}`} value={typEnum.type}>{typEnum.pl_name}</option> ) : null
 		
-		let noRoom = <option key={0} value={0}>Nie przypisuj</option>
+		let noRoom = <option key={`r_0`} value={0}>Nie przypisuj</option>
 		let rooms = (this.props.rooms) ? _.map( this.props.rooms, (room, i) => 
-				<option key={i} value={room.id}>{room.name}</option> ) : null
+				<option key={`r_${i+1}`} value={room.id}>{room.name}</option> ) : null
 
 		let roomId_options = _.concat(noRoom, rooms)
 

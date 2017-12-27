@@ -21,13 +21,15 @@ class AddDeviceModal extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.showModal == false && nextProps.showModal == true)
+		if (this.props.showModal == false && nextProps.showModal == true) {
+			let room_id = (nextProps.currentRoomId) ? nextProps.currentRoomId : 0
 			this.setState({
 				name: "",
 				input_id: 1,
 				type: "POWER",
-				roomId: 0
+				room_id: room_id
 			})
+		}
 	}
 
 	handleChange(field, val) {
@@ -81,6 +83,7 @@ class AddDeviceModal extends React.Component {
 
 AddDeviceModal.propTypes = {
 	rooms: PropTypes.array,
+	currentRoomId: PropTypes.number,
 	showModal: PropTypes.bool.isRequired,
 	deviceTypeEnums: PropTypes.array.isRequired,
 	deviceCallbacks: PropTypes.object.isRequired,
