@@ -66,6 +66,7 @@ class AddDeviceModal extends React.Component {
 				<Modal.Body>
 					<DeviceForm 
 						formData={this.state} 
+						rooms={this.props.rooms} 
 						deviceTypeEnums={this.props.deviceTypeEnums}
 						handleChange={this.handleChange} />
 				</Modal.Body>
@@ -79,6 +80,7 @@ class AddDeviceModal extends React.Component {
 }
 
 AddDeviceModal.propTypes = {
+	rooms: PropTypes.array,
 	showModal: PropTypes.bool.isRequired,
 	deviceTypeEnums: PropTypes.array.isRequired,
 	deviceCallbacks: PropTypes.object.isRequired,

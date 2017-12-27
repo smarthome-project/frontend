@@ -18,16 +18,14 @@ class Room extends React.Component {
 
 		return (room) ? (
 			<div className="roomDetails__wrapper">
-				
-				<div className="roomDetails__status">
-					<RoomStatus  
-						room={room} />
-				</div>
 
 				<div className="roomDetails__devices">
 					<Devices 
 						className="roomDetails__devices"
-						roomId={room.id} 
+						room_id={room.id} 
+						override_title={{
+							mainTitle: room.name
+						}}
 						devices={this.props.devices} 
 						deviceCallbacks={this.props.deviceCallbacks} />
 				</div>
@@ -38,7 +36,9 @@ class Room extends React.Component {
 }
 
 Room.propTypes = {
-	rooms: PropTypes.array
+	rooms: PropTypes.array,
+	devices: PropTypes.array,
+	deviceCallbacks: PropTypes.object
 }
 
 export default Room

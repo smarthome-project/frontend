@@ -2,15 +2,49 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import PropTypes from 'prop-types'
 
+import CronSchedule from '../../../utils/cronTranslate'
 import SchedulerListStyle from './styles.scss'
 
 import { Link } from 'react-router-dom'
 import { PageHeader, Table, Button, Grid, Row, Col } from 'react-bootstrap'
 import { Icon } from '../../shared/Icon'
 import _ from 'lodash'
-import CronSchedule from '../../../utils/cronTranslate'
 
 class SchedulerList extends React.Component {
+
+	constructor(props) {
+		super(props)
+
+		this.convertCron = new CronSchedule()
+
+		let schedules = props.scheduls
+		for(let i = 0; i < _.size(schedules); i++) {
+			this.convertCron.cronToString(schedules[i].cron)
+				.then(cronString => schedules[i].cronString = cronString)
+				.catch(e => console.log(e))
+		}
+
+		this.state = {scheduls: schedules}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if(!nextProps.scheduls)
+			return
+		
+		let schedules = nextProps.scheduls
+		let processing = _.after(_.size(schedules), () => {
+			this.setState({scheduls: schedules})
+		})
+
+		for(let i = 0; i < _.size(schedules); i++) {
+			this.convertCron.cronToString(schedules[i].cron)
+				.then(cronString => {
+					schedules[i].cronString = cronString
+					processing()
+				})
+				.catch(e => console.log(e))
+		}
+	}
 
 	getActions(scheduleId) {
 		return <span className="schedulerActions">
@@ -49,17 +83,15 @@ class SchedulerList extends React.Component {
 	}
 
 	render () {
-		let c = new CronSchedule([false,true,false,false,false,false,false],["12", "16", "19"], ["30"])
-		c.parseCron("0 12 * * 1,3,5").then(resp => console.log(resp))
 
-		console.log(this.props.scheduls)
+		console.log(this.state.scheduls)
 
-		const tableBody = _.map(this.props.scheduls, (sche) => <tr key={sche.id}>
+		const tableBody = _.map(this.state.scheduls, (sche) => <tr key={sche.id}>
 			<td>{sche.id}</td>
 			<td>{sche.room_name}</td>
 			<td>{sche.device_name}</td>
+			<td>{sche.cronString}</td>
 			<td>{this.getActionByState(sche.state)}</td>
-			<td>{sche.cron}</td>
 			<td>{this.getActived(sche.active)}</td>
 			<td>{this.getActions(sche.id)}</td>
 		</tr>)
@@ -71,8 +103,8 @@ class SchedulerList extends React.Component {
 						<th>#</th>
 						<th>Pokój</th>
 						<th>Urządzenie</th>
-						<th>Akcja</th>
 						<th>Harmonogram</th>
+						<th>Akcje</th>
 						<th>Aktywny</th>
 						<th></th>
 					</tr>

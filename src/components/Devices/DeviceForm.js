@@ -17,8 +17,8 @@ class DeviceForm extends React.Component {
 			<option key={i} value={typEnum.type}>{typEnum.pl_name}</option> ) : null
 		
 		let noRoom = <option key={0} value={0}>Nie przypisuj</option>
-		let rooms = (this.props.roomIdEnums) ? _.map( this.props.roomIdEnums, (roomEnum, i) => 
-				<option key={i} value={roomEnum.id}>{roomEnum.name}</option> ) : null
+		let rooms = (this.props.rooms) ? _.map( this.props.rooms, (room, i) => 
+				<option key={i} value={room.id}>{room.name}</option> ) : null
 
 		let roomId_options = _.concat(noRoom, rooms)
 
@@ -86,7 +86,7 @@ DeviceForm.propTypes = {
 	}).isRequired,
 	handleChange: PropTypes.func.isRequired,
 	deviceTypeEnums: PropTypes.array,
-	roomsEnums: PropTypes.array
+	rooms: PropTypes.array
 }
 
 export default DeviceForm

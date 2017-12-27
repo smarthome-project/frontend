@@ -41,8 +41,8 @@ class Devices extends React.Component {
 
 	render() {
 
-		const roomId = this.props.roomId || null
-		let filteredDevices = (roomId) ? _.filter(this.props.devices, d => d.roomId == roomId) : this.props.devices
+		const room_id = this.props.room_id || null
+		let filteredDevices = (room_id) ? _.filter(this.props.devices, d => d.room_id == room_id) : this.props.devices
 		let devices = _.map(filteredDevices, device => (
 				<SingleDevice 
 					key={device.id} 
@@ -52,8 +52,8 @@ class Devices extends React.Component {
 
 		const header = (
 			<PageHeader>
-				Urządzenia 
-				<small> zarządzanie urządzeniami</small>
+				{(this.props.override_title) ? this.props.override_title.mainTitle : null || "Urządzenia " }
+				<small> {(this.props.override_title) ? this.props.override_title.subTitle : null || " zarządzanie urządzeniami" }</small>
 				<Button className="pull-right addButton" onClick={this.openModal} >
 					<Icon name="plus" size={1} />
 				</Button>
@@ -68,6 +68,7 @@ class Devices extends React.Component {
 					</div>
 					<AddDeviceModal 
 						showModal={this.state.modalShow}
+						rooms={this.props.rooms}
 						deviceTypeEnums={this.state.deviceTypeEnums}
 						deviceCallbacks={this.props.deviceCallbacks}
 						callbackClose={this.closeModal} />
@@ -78,8 +79,13 @@ class Devices extends React.Component {
 }
 
 Devices.propTypes = {
-	roomId: PropTypes.number,
+	override_title: PropTypes.shape({
+		mainTitle: PropTypes.string,
+		subTitle: PropTypes.string
+	}),
+	room_id: PropTypes.number,
 	devices: PropTypes.array,
+	rooms: PropTypes.array,
 	deviceCallbacks: PropTypes.object
 }
 

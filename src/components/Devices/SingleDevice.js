@@ -38,17 +38,40 @@ DevicePower.propTypes = {
 
 class DeviceLedRgb extends React.Component {
 	
+	constructor(props) {
+		super(props)
+		this.handleTogglePicker = this.handleTogglePicker.bind(this)
+		this.state = {open: false}
+	}
+
 	handleChangeState(color, event) {
 		this.props.handleChangeState('rgb', color.hex)
 	}
 
+	handleTogglePicker() {
+		this.setState({open: !this.state.open})
+	}
+
 	render() {
+
+		let picker = <div className="deviceColor_picker">
+						<SketchPicker
+							disableAlpha={true}
+							presetColors={[]}
+							color={this.props.state.rgb}
+							onChangeComplete={this.handleChangeState.bind(this)}/>
+						<br />
+						<Button className="pull-right" onClick={this.handleTogglePicker}>OK</Button>
+					</div>
+
+		let preview = <div className="deviceColor_preview">
+						<div className="deviceColor_preview_color"
+							style={{backgroundColor: this.props.state.rgb}}
+							onClick={this.handleTogglePicker}></div>
+						</div>
+
 		return <div>
-			<SketchPicker 
-				disableAlpha={true}
-				presetColors={[]}
-				color={this.props.state.rgb}
-				onChangeComplete={this.handleChangeState.bind(this)} />
+			{(this.state.open) ? picker : preview}
 		</div>
 	}
 }

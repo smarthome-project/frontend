@@ -2,26 +2,30 @@
 	width: 100%;
 	display: grid;
 
-	grid-template-columns: 70% 5% 25%;
-	grid-template-areas: 
-		"devices . status"
-		"devices . status"
-		"devices . status";
+	// grid-template-columns: 70% 5% 25%;
+	// grid-template-areas: 
+	// 	"devices . status"
+	// 	"devices . status"
+	// 	"devices . status";
 
-    @media only screen and (max-width: 800px) {
-    	grid-template-rows: 20% 5% 75%;
-    	grid-template-columns: auto;
-		grid-template-areas: 
-			"status"
-			"."
-			"devices";
-    }
+ //    @media only screen and (max-width: 800px) {
+ //    	grid-template-rows: 20% 5% 75%;
+ //    	grid-template-columns: auto;
+	// 	grid-template-areas: 
+	// 		"status"
+	// 		"."
+	// 		"devices";
+ //    }
+
+	grid-template-columns: 100%;
+	grid-template-areas: 
+		"devices";
 
 	.roomDetails__devices {
 		grid-area: devices;
 	}
 
-	.roomDetails__status {
-		grid-area: status;
-	}
+	// .roomDetails__status {
+	// 	grid-area: status;
+	// }
 }

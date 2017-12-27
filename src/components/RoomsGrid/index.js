@@ -17,7 +17,7 @@ class RoomPanel extends React.Component {
 	render() {
 		let roomObj = this.props.room
 		let deviceCount = _(this.props.devices)
-			.filter(dev => dev.roomId == roomObj.id)
+			.filter(dev => dev.room_id == roomObj.id)
 			.size()
 
 		let img_url = require(`../../assets/images/usable/${roomObj.image_path}`)

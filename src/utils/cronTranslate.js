@@ -21,29 +21,16 @@ class CronSchedule {
 
 	constructor(days, hours, min) {
 		
-		this.stateCron = Object.freeze({
-			dateType: constants.CRON_DAYS_EVERY,
-			timeType: constants.CRON_TIME_SPECIFIC_ONE,
-			days: [true,true,true,true,true,true,true],
-			hours: ['12'],
-			minutes: ['00']
-		})
-
 		this.min = "0"
 		this.hour = "12"
 		this.day = "*"
 		this.month = "*"
 		this.dow = "*"
 
-
-		Promise.all([
-			this.makeCronDate(days),
-			this.makeCronTime(hours, min)
-		]).then(values => { 	
-			
-			//debug log
-			console.log(this.generateCron())
-		}).catch(e => console.log(e))
+		if (days && hours && min)
+			this.loadDataFromState(days, hours, min)
+				.then(resp => {})
+				.catch(e => console.log(e))
 	}
 
 	makeCronDate(days) {
@@ -140,17 +127,24 @@ class CronSchedule {
 		})
 	}
 
-	generateCron() {
+	loadDataFromState(days, hours, min) {
+		return Promise.all([
+			this.makeCronDate(days),
+			this.makeCronTime(hours, min)
+		])
+	}
+
+	getCronString() {
 		let cron_string = `${this.min} ${this.hour} ${this.day} ${this.month} ${this.dow}`
 		return cron_string
 	}
 
-	parseCron(cronString) {
+	cronToString(cronString) {
 		return new Promise((resolve, reject) => {
 			let cronData = cronString.split(" ")
 
 			if (_.size(cronData) !== 5) {
-				console.log("Error on CronSchedule->parseCron(): cronData bad length.")
+				console.log("Error on CronSchedule->cronToString(): cronData bad length.")
 				console.log(cronData)
 				
 				reject(false)
@@ -236,6 +230,11 @@ class CronSchedule {
 
 			resolve(scheduleString)
 		})
+	}
+
+	stateToString() {
+		let cron = this.getCronString()
+		return this.cronToString(cron)
 	}
 }
 
