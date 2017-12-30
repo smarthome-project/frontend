@@ -4,14 +4,20 @@ import PropTypes from 'prop-types'
 
 import { Link } from 'react-router-dom'
 import consts from './../../../../utils/constants'
-import { Button, Col, Form, FormGroup, ControlLabel, FormControl, Checkbox } from 'react-bootstrap'
+import { Button, Col, Form, FormGroup, ControlLabel, FormControl, ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 import _ from 'lodash'
 
 class WizzardFormDate extends React.Component {
 
 	handleChange(field, evt) {
-		
-		let value = evt.target.value
+
+		let value
+
+		if (field == 'days') {
+			value = _.map(evt, (e) => "" + e)
+		} else {
+			value = evt.target.value
+		}
 
 		if (value == consts.CRON_DAYS_EVERY)
 			this.props.callbacks.change('days', ['*'])
@@ -32,6 +38,8 @@ class WizzardFormDate extends React.Component {
 	render() {
 
 		console.log(this.props.formsData)
+
+		let intDays = _.map(this.props.days, (d) => Number(d))
 
 		let form_oneDay = (
 			<FormGroup controlId="selectDayType">
@@ -63,19 +71,20 @@ class WizzardFormDate extends React.Component {
 					<ControlLabel></ControlLabel>
 				</Col>
 				<Col sm={8}>
-					<FormGroup>
-						<Checkbox inline>
-							1
-						</Checkbox>
-						{' '}
-						<Checkbox inline>
-							2
-						</Checkbox>
-						{' '}
-						<Checkbox inline>
-							3
-						</Checkbox>
-					</FormGroup>
+					<ToggleButtonGroup
+						type="checkbox"
+						value={intDays} 
+						onChange={this.handleChange.bind(this, 'days')} >
+
+							<ToggleButton value={1}>Pn</ToggleButton>
+							<ToggleButton value={2}>Wt</ToggleButton>
+							<ToggleButton value={3}>Śr</ToggleButton>
+							<ToggleButton value={4}>Cz</ToggleButton>
+							<ToggleButton value={5}>Pt</ToggleButton>
+							<ToggleButton value={6}>Sb</ToggleButton>
+							<ToggleButton value={7}>Nd</ToggleButton>
+
+					</ToggleButtonGroup>
 				</Col>
 			</FormGroup>
 		)
