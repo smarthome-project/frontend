@@ -42,8 +42,8 @@ Switch.defaultProps = {
 	bsSize: 'small',
 	onColor: 'primary',
 	offColor: 'default',
-	onText: 'ON',
-	offText: 'OFF',
+	onText: 'WŁ',
+	offText: 'WYŁ',
 	handleWidth: 'auto',
 	labelWidth: 'auto',
 	labelText: '',
@@ -51,7 +51,7 @@ Switch.defaultProps = {
 }
 
 Switch.propTypes = {
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	value: PropTypes.bool.isRequired,
 	labelText: PropTypes.string,
 	disabled: PropTypes.bool,

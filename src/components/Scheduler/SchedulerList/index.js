@@ -27,11 +27,14 @@ class SchedulerList extends React.Component {
 		this.state = {scheduls: schedules}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if(!nextProps.scheduls)
+	componentDidUpdate(prevProps, prevState) {
+		if(!this.props.scheduls)
+			return
+
+		if(_.isEqual(prevProps, this.props))
 			return
 		
-		let schedules = nextProps.scheduls
+		let schedules = this.props.scheduls
 		let processing = _.after(_.size(schedules), () => {
 			this.setState({scheduls: schedules})
 		})

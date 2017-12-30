@@ -17,7 +17,7 @@ import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
 import { getRooms, createRooms } from '../../services/ApiRooms'
 import { getDevices, createDevice, changeStateDevice } from '../../services/ApiDevices'
-import { getSchedules } from '../../services/ApiScheduls'
+import { getSchedules, setSchedule } from '../../services/ApiScheduls'
 
 
 class MainContainer extends React.Component {
@@ -34,6 +34,7 @@ class MainContainer extends React.Component {
 
 		this.handleAddRoom = this.handleAddRoom.bind(this)
 		this.handleAddDevice = this.handleAddDevice.bind(this)
+		this.handleAddSchedule = this.handleAddSchedule.bind(this)
 		this.handleChangeStateDevice = this.handleChangeStateDevice.bind(this)
 
 		this.state = {
@@ -156,6 +157,22 @@ class MainContainer extends React.Component {
 			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 	}
 
+	//Schedules
+	handleAddSchedule(schedule) {
+		setSchedule(schedule)
+			.then(newSchedule => {
+				this.setState(
+					update(this.state, {scheduls: {$push: [newSchedule]}})
+				)
+				
+				//reload scheduls:
+				getSchedules()
+					.then(scheduls => { this.setState({scheduls: scheduls}) })
+					.catch(e => console.log(e))
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
 	/*==============================
 	=            Render            =
 	==============================*/
@@ -178,6 +195,9 @@ class MainContainer extends React.Component {
 				}}
 				alarmCallbacks={{
 					handleActiveAlarm: this.handleActiveAlarm
+				}}
+				scheduleCallbacks={{
+					handleAddSchedule: this.handleAddSchedule
 				}} />
 		)
 	}

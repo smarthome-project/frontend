@@ -19,7 +19,7 @@ class CronSchedule {
 	*
 	*/
 
-	constructor(days, hours, min) {
+	constructor(days, hours, min, rdy) {
 		
 		this.min = "0"
 		this.hour = "12"
@@ -29,14 +29,14 @@ class CronSchedule {
 
 		if (days && hours && min)
 			this.loadDataFromState(days, hours, min)
-				.then(resp => {})
+				.then(resp => { rdy() })
 				.catch(e => console.log(e))
 	}
 
 	makeCronDate(days) {
 		return new Promise((resolve, reject) => {
 			
-			if (_.every(days)) { //If all is true.
+			if (_.every(days) && _.size(days) == 7) { //If all is true.
 
 				this.dow = "*"
 				
@@ -172,7 +172,7 @@ class CronSchedule {
 				scheduleString += "W dni "
 				for (let idx = 0; idx < _.size(splitDays); idx++) {
 					if (idx != 0)
-						scheduleString += ","
+						scheduleString += ", "
 					scheduleString += constants.CRON_DICT_DAYS_SHORT[splitDays[idx]]
 				}
 				
@@ -216,8 +216,8 @@ class CronSchedule {
 				
 			} else if (regEx_cronSpecific.test(hours) && regEx_cronSpecific.test(mins)) { // x y => o wybranej godzinie
 				
-				let fMin = (mins < 10) ? "0" + mins : mins
-				let fHour = (hours < 10) ? "0" + hours : hours
+				let fMin = (Number(mins) < 10) ? "0" + Number(mins) : mins
+				let fHour = (Number(hours) < 10) ? "0" + Number(hours) : hours
 
 				scheduleString += `o godz. ${fHour}:${fMin}`
 

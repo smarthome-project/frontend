@@ -32,8 +32,8 @@ class Main extends React.Component {
 							<Route path="/rooms" render={ (props) => <RoomsGrid {...props} devices={this.props.devices} rooms={this.props.rooms} roomCallbacks={this.props.roomCallbacks}/> } />
 							<Route path="/devices" render={ (props) => <Devices {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} /> } />
 							<Route path="/room/:id"  render={ (props) => <Room {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} roomCallbacks={this.props.roomCallbacks}/> } />
-							<Route path="/scheduler/add"  render={ (props) => <SchedulerAdd {...props} scheduls={this.props.scheduls} schedulsCallbacks={this.props.schedulsCallbacks}/> } />
-							<Route path="/scheduler"  render={ (props) => <SchedulerList {...props} scheduls={this.props.scheduls} schedulsCallbacks={this.props.schedulsCallbacks}/> } />
+							<Route path="/scheduler/add"  render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
+							<Route path="/scheduler"  render={ (props) => <SchedulerList {...props} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
 							<Route path="/configuration"  render={ (props) => <Configuration {...props} /> } />
 						</Switch>
 					</div>
@@ -68,7 +68,7 @@ Main.propTypes = {
 	roomCallbacks: PropTypes.object,
 	deviceCallbacks: PropTypes.object,
 	alarmCallbacks: PropTypes.object,
-	schedulsCallbacks: PropTypes.object
+	scheduleCallbacks: PropTypes.object
 }
 
 export default Main

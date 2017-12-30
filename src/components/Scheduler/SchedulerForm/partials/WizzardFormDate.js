@@ -37,12 +37,12 @@ class WizzardFormDate extends React.Component {
 
 	render() {
 
-		console.log(this.props.formsData)
-
-		let intDays = _.map(this.props.days, (d) => Number(d))
+		let intDays = null
+		if (this.props.formsData.day_type == consts.CRON_DAYS_CHOOSED)
+			intDays = _.map(this.props.formsData.days, d => Number(d))
 
 		let form_oneDay = (
-			<FormGroup controlId="selectDayType">
+			<FormGroup controlId="form_oneDay">
 				<Col sm={2}>
 					<ControlLabel></ControlLabel>
 				</Col>
@@ -66,7 +66,7 @@ class WizzardFormDate extends React.Component {
 		)
 
 		let form_chooseDays = (
-			<FormGroup controlId="selectDayType">
+			<FormGroup controlId="form_chooseDays">
 				<Col sm={2}>
 					<ControlLabel></ControlLabel>
 				</Col>

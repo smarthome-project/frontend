@@ -34,16 +34,13 @@ export const getSchedules = () => {
 	})
 }
 
-export const setSchedule = () => {
+export const setSchedule = (schedule) => {
 	return new Promise((resolve, reject) => {
 
 		fetch(`${API_URL}/api/schedules`, {
 			headers: API_HEADER(),
 			method: 'POST',
-			// body: JSON.stringify({
-			// 	'cos': cos,
-			// 	'cosy': cosy
-			// })
+			body: JSON.stringify(schedule)
 		})
 			.then(resp => {
 				if (resp.status == 401)

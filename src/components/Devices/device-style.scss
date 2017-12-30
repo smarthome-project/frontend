@@ -40,7 +40,7 @@
 
 		.panel-body {
 			height: 100%;
-			padding: 5px 15px;
+			padding: 0px 15px 5px;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -48,6 +48,14 @@
 
 			h5 {
 				margin: 0;
+			}
+
+			.deviceName {
+				display: inline-block;
+				word-wrap: break-word;
+				font-weight: bold;
+				max-width: 100%;
+				margin-bottom: 10px;
 			}
 		}
 	}

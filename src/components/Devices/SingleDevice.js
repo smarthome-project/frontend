@@ -85,18 +85,13 @@ DeviceLedRgb.propTypes = {
 
 class DeviceLedCw extends React.Component {
 	render() {
-		return <input 
-			type="color" 
-			value={this.props.state.rgb} 
-			name={this.props.name} 
-			onChange={this.props.handleChangeState('rgb')} />
+		return <span> TODO </span>
 	}
 }
 
-DeviceLedRgb.propTypes = {
+DeviceLedCw.propTypes = {
 	state: PropTypes.object,
 	handleChangeState: PropTypes.func,
-	name: PropTypes.string
 }
 
 class SingleDevice extends React.Component {
@@ -120,9 +115,16 @@ class SingleDevice extends React.Component {
 	render() {
 
 		let device = this.props.device
+
+		const deviceType_dict = {
+			'POWER': 'Zasilanie',
+			'LEDRGB': 'Światła RGB',
+			'LEDCW' : 'Światła C/Z'
+		}
+
 		const title = <h2> 
 				<span className="header-name">
-					{device.name}
+					{deviceType_dict[device.type]}
 				</span>
 				<span className="header-icons">
 					<a className="pull-right deviceActionHeader">
@@ -136,8 +138,6 @@ class SingleDevice extends React.Component {
 					</a>
 				</span>
 			</h2>
-
-		console.log(device)
 
 		let controllBody
 		
@@ -159,6 +159,7 @@ class SingleDevice extends React.Component {
 		return (device) ? (
 			<Col xs={6} sm={4} md={4} lg={3}>
 				<Panel header={title}>
+					<span className="deviceName">{device.name}</span>
 					{controllBody}
 				</Panel>
 			</Col>
