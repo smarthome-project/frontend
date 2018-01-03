@@ -4,13 +4,11 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 
 import deviceStyle from './device-style.scss'
-
-
 import Switch from '../shared/Switch'
 import { Icon } from '../shared/Icon'
 import { SketchPicker } from 'react-color'
 import { Panel, Col, Button } from 'react-bootstrap'
-
+import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 class DevicePower extends React.Component {
 	
@@ -84,8 +82,51 @@ DeviceLedRgb.propTypes = {
 
 
 class DeviceLedCw extends React.Component {
+	
+	handleChangeState(evt) {
+		let numVal, hexVal, cVal, wVal, cValHex, wValHex
+
+		numVal = evt.target.value
+
+		if (numVal < 0 && numVal > -20) {
+			hexVal = "#ff0000"
+		} else if (numVal <= -20) {
+			hexVal = "#000000"
+		} else {
+			wVal = 255 - numVal
+			cVal = 255 - wVal
+
+			wValHex = wVal.toString(16)
+			cValHex = cVal.toString(16)
+
+			hexVal = `#${(wValHex.length == 1) ? "0" + wValHex : wValHex}${(cValHex.length == 1) ? "0" + cValHex : cValHex}00`
+		}
+
+		this.props.handleChangeState('cw', hexVal)
+	}
+
+	hexToValue(hex) {
+		
+		if (hex == "#000000")
+			return -40
+
+		let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+		return result ? parseInt(result[2], 16) : -40
+	}
+
 	render() {
-		return <span> TODO </span>
+
+		const numVal = this.hexToValue(this.props.state.cw)
+
+		return <div>
+			<input 
+				type="range"
+				min="-40"
+				max="255"
+				step="1"
+				value={numVal}
+				onInput={this.handleChangeState.bind(this)} />
+		</div>
 	}
 }
 

@@ -2,6 +2,8 @@ const path 		= require('path')
 const webpack	= require('webpack')
 const express	= require('express')
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPluginConfig = new BundleAnalyzerPlugin()
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -26,6 +28,7 @@ const CopyWebpackPluginConfig = new CopyWebpackPlugin([
 	'debug': 'debug'
 })
 
+
 module.exports = {
 	devServer: {
 		historyApiFallback: true,
@@ -49,8 +52,14 @@ module.exports = {
 			{ test: /\.(png|jpg)$/, loaders: ['file-loader'] }
 		],
 	},
+	resolve: {
+		alias: {
+			"jquery": path.join(__dirname, "./src/utils/jquery-stub.js")
+		}
+	},
 	plugins: [
 		HtmlWebpackPluginConfig,
-		CopyWebpackPluginConfig
+		CopyWebpackPluginConfig,
+		BundleAnalyzerPluginConfig
 	]
 }

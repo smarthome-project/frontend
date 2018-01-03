@@ -17,6 +17,7 @@ import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
 import { getRooms, createRooms } from '../../services/ApiRooms'
 import { getDevices, createDevice, changeStateDevice } from '../../services/ApiDevices'
+import { getCameras, createCamera, updateCamera, removeCamera } from '../../services/ApiCameras'
 import { getSchedules, setSchedule } from '../../services/ApiScheduls'
 
 
@@ -32,15 +33,24 @@ class MainContainer extends React.Component {
 		this.timeToInactive = 1000 * _config.timeToScreensaverInSec
 		this.inActiveTimer = null
 
+		//Add
 		this.handleAddRoom = this.handleAddRoom.bind(this)
 		this.handleAddDevice = this.handleAddDevice.bind(this)
+		this.handleAddCamera = this.handleAddCamera.bind(this)
 		this.handleAddSchedule = this.handleAddSchedule.bind(this)
+
+		//Update
 		this.handleChangeStateDevice = this.handleChangeStateDevice.bind(this)
+		this.handleUpdateCamera = this.handleUpdateCamera.bind(this)
+
+		//Remove
+		this.handleRemoveCamera = this.handleRemoveCamera.bind(this)
 
 		this.state = {
 			user: {},
 			rooms: [],
 			devices: [],
+			cameras: [],
 			scheduls: [],
 			alarmActive: false,
 			appState: consts.STATE_ACTIVE
@@ -72,9 +82,13 @@ class MainContainer extends React.Component {
 			.then(devices => { this.setState({devices: devices}) })
 			.catch(e => console.log(e))
 
+		getCameras()
+			.then(cameras => { this.setState({cameras: cameras}) })
+			.catch(e => console.log(e))
+
 		getSchedules()
 			.then(scheduls => { this.setState({scheduls: scheduls}) })
-			.catch(e => console.log(e))
+			.catch(e => console.log(e))	
 
 		addEventUserActive(this._handleActivity)
 		this.resetInactiveTimer()
@@ -157,6 +171,58 @@ class MainContainer extends React.Component {
 			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 	}
 
+	//Cameras
+	handleAddCamera(camera) {
+		createCamera(camera)
+			.then(newCamera => { 
+				this.setState(
+					update(this.state, {cameras: {$push: [newCamera]}})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
+	handleUpdateCamera(camera) {
+		updateCamera(camera)
+			.then(changedCamera => { 
+				const cameraIndex = _.findIndex(this.state.cameras, c => c.id == camera.id)
+				
+				console.log(update(this.state, {
+						cameras: {
+							[cameraIndex]: {
+								$set: changedCamera
+							}
+						}
+					}))
+
+				this.setState(
+					update(this.state, {
+						cameras: {
+							[cameraIndex]: {
+								$set: changedCamera
+							}
+						}
+					})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
+	handleRemoveCamera(camId) {
+		removeCamera(camId)
+			.then(resp => { 
+				const cameraIndex = _.findIndex(this.state.cameras, c => c.id == camId)
+				this.setState(
+					update(this.state, {
+						cameras: {
+							$splice: [[cameraIndex, 1]]
+						}
+					})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
 	//Schedules
 	handleAddSchedule(schedule) {
 		setSchedule(schedule)
@@ -185,6 +251,7 @@ class MainContainer extends React.Component {
 				user={this.state.user}
 				rooms={this.state.rooms}
 				devices={this.state.devices}
+				cameras={this.state.cameras}
 				scheduls={this.state.scheduls}
 				roomCallbacks={{
 					handleAddRoom: this.handleAddRoom
@@ -192,6 +259,11 @@ class MainContainer extends React.Component {
 				deviceCallbacks={{
 					handleAddDevice: this.handleAddDevice,
 					handleChangeStateDevice: this.handleChangeStateDevice
+				}}
+				camerasCallbacks={{
+					handleAddCamera: this.handleAddCamera,
+					handleUpdateCamera: this.handleUpdateCamera,
+					handleRemoveCamera: this.handleRemoveCamera
 				}}
 				alarmCallbacks={{
 					handleActiveAlarm: this.handleActiveAlarm

@@ -51,11 +51,15 @@ class NavigationTop extends React.Component {
 				<Navbar.Collapse>
 
 					<Nav>
-						<NavItem eventKey={1} componentClass={Link} href="/rooms" to="/rooms" onClick={this.close} active={location.pathname === '/rooms'}>
+						<NavItem eventKey={1} componentClass={Link} href="/monitoring" to="/monitoring" onClick={this.close} active={location.pathname === '/monitoring'}>
+							<Icon name="video-camera"/> Monitoring
+						</NavItem>
+
+						<NavItem eventKey={2} componentClass={Link} href="/rooms" to="/rooms" onClick={this.close} active={location.pathname === '/rooms'}>
 							<Icon name="home"/> Pomieszczenia
 						</NavItem>
 
-						<NavItem eventKey={2} componentClass={Link} href="/devices" to="/devices" onClick={this.close} active={location.pathname === '/devices'}>
+						<NavItem eventKey={3} componentClass={Link} href="/devices" to="/devices" onClick={this.close} active={location.pathname === '/devices'}>
 							<Icon name="lightbulb-o"/> Urządzenia
 						</NavItem>
 
@@ -65,14 +69,14 @@ class NavigationTop extends React.Component {
 					</Nav>
 
 					<Nav pullRight>
-						<NavDropdown eventKey={3} title={this.getNavigationElementUser()} id="navigation-user-menu">
-							<MenuItem eventKey={3.1} componentClass={Link} href="/myAccount" to="/myAccount" onClick={this.close} active={location.pathname === '/myAccount'}>Moje Konto</MenuItem>
-							<MenuItem eventKey={3.2} componentClass={Link} href="/configuration" to="/configuration" onClick={this.close} active={location.pathname === '/configuration'}>Konfiguracja</MenuItem>
+						<NavDropdown eventKey={5} title={this.getNavigationElementUser()} id="navigation-user-menu">
+							<MenuItem eventKey={5.1} componentClass={Link} href="/myAccount" to="/myAccount" onClick={this.close} active={location.pathname === '/myAccount'}>Moje Konto</MenuItem>
+							<MenuItem eventKey={5.2} componentClass={Link} href="/configuration" to="/configuration" onClick={this.close} active={location.pathname === '/configuration'}>Konfiguracja</MenuItem>
 							<MenuItem divider />
-							<MenuItem eventKey={3.3} componentClass={Link} href="/login" to="/login" onClick={this.close}>Wyloguj</MenuItem>
+							<MenuItem eventKey={5.3} componentClass={Link} href="/login" to="/login" onClick={this.close}>Wyloguj</MenuItem>
 						</NavDropdown>
 
-						<NavItem eventKey={4} onClick={this.close && this.props.alarmCallbacks.handleActiveAlarm}>
+						<NavItem eventKey={6} onClick={this.close && this.props.alarmCallbacks.handleActiveAlarm}>
 							<Icon name="lock"/> Zablokuj
 						</NavItem>
 					</Nav>
