@@ -1,0 +1,73 @@
+#camerasGrid {
+
+	a {
+		color: inherit;
+		text-decoration: inherit;
+	}
+
+	.panel {
+		height: 180px;
+		display: flex;
+	 	flex-flow: column;
+
+		.panel-title {
+
+			.header-name {
+				
+			}
+
+			.header-icons {
+
+			}
+
+
+			.cameraActionHeader {
+
+				i {
+					vertical-align: middle;
+				}
+
+				font-size: 18px;
+				margin: -2px 0 0 5px;
+				color: #CCC;
+
+		    	transition: color .3s;
+				-o-transition: color .3s;
+				-moz-transition: color .3s;
+				-webkit-transition: color .3s;
+
+				&:hover {
+					color: #000;
+					cursor: pointer;
+				}
+			}
+		}
+
+		.panel-body {
+			height: 100%;
+			padding: 0px 15px 5px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			box-sizing: border-box;
+
+			h5 {
+				margin: 0;
+			}
+
+			.roomName,
+			.cameraName {
+				display: inline-block;
+				word-wrap: break-word;
+				margin-bottom: 10px;
+				font-weight: bold;
+				max-width: 100%;
+				font-size: 16px;
+			}
+
+			.cameraName {
+				font-size: 20px;
+			}
+		}
+	}
+}

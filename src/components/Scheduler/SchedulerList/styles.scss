@@ -1,0 +1,30 @@
+.addButton {
+	color: rgba(40,40,40, 0.5);
+	font-size: 24px;
+	width: 40px;
+	height: 40px;
+	padding: 3px;
+	box-sizing: border-box;
+
+	i {
+		width: 24px;
+		height: 24px;
+	}
+}
+
+.schedulerTable {
+	margin-top: 15px;
+
+	.wizard_rgb_color {
+		display: inline-block;
+
+		width: 14px;
+		height: 14px;
+
+		margin-left: 3px;
+		margin-bottom: -2px;
+
+		border-radius: 50%;
+		border: solid 1px black;
+	}
+}

@@ -1,0 +1,51 @@
+{
+  "name": "smarthome-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm install && webpack-dev-server --hot --host 0.0.0.0",
+    "build": "webpack --progress -p",
+    "build:clean": "rm -rf dist && webpack --progress -p"
+  },
+  "author": "Lisrec",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "copy-webpack-plugin": "^4.3.1",
+    "css-loader": "^0.28.7",
+    "express": "^4.16.2",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.5",
+    "node-sass": "^4.6.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.7.1",
+    "webpack-bundle-analyzer": "^2.9.1",
+    "webpack-dev-server": "^2.9.2"
+  },
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "html-webpack-plugin": "^2.30.1",
+    "immutability-helper": "^2.6.2",
+    "lodash": "^4.17.4",
+    "react": "^16.0.0",
+    "react-addons-update": "^15.6.2",
+    "react-bootstrap": "^0.31.5",
+    "react-bootstrap-slider": "^2.1.3",
+    "react-bootstrap-switch": "^15.5.3",
+    "react-bootstrap-time-picker": "^1.0.3",
+    "react-color": "^2.13.8",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "react-transition-group": "^1.2.1",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  }
+}
