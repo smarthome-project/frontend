@@ -167,7 +167,7 @@ class MainContainer extends React.Component {
 	}
 
 	uploadNewDeviceState(device, newState) {
-		console.log("Real save")
+		//console.log("Real save")
 		changeStateDevice(device, newState)
 			.then(updatedDevice => { 
 				const deviceIndex = this.state.devices.findIndex((device) => device.id == updatedDevice.id)
@@ -196,7 +196,7 @@ class MainContainer extends React.Component {
 			})
 		)
 
-		console.log("Change state")
+		//console.log("Change state")
 
 		this.uploadNewDeviceState(device, newState)
 	}

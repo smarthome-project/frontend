@@ -70,9 +70,6 @@ class NavigationTop extends React.Component {
 
 					<Nav pullRight>
 						<NavDropdown eventKey={5} title={this.getNavigationElementUser()} id="navigation-user-menu">
-							<MenuItem eventKey={5.1} componentClass={Link} href="/myAccount" to="/myAccount" onClick={this.close} active={location.pathname === '/myAccount'}>Moje Konto</MenuItem>
-							<MenuItem eventKey={5.2} componentClass={Link} href="/configuration" to="/configuration" onClick={this.close} active={location.pathname === '/configuration'}>Konfiguracja</MenuItem>
-							<MenuItem divider />
 							<MenuItem eventKey={5.3} componentClass={Link} href="/login" to="/login" onClick={this.close}>Wyloguj</MenuItem>
 						</NavDropdown>
 

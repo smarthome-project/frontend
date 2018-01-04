@@ -23,7 +23,7 @@ class InfoScreen extends React.Component {
 		const API_PROXY = 'https://cors-anywhere.herokuapp.com/'
 		const API_URL = `https://api.darksky.net/forecast/${API_KEY}/${API_CORDS}/?lang=pl&units=ca&exclude=hourly,minutely`
 
-		console.log(API_PROXY + API_URL)
+		//console.log(API_PROXY + API_URL)
 
 		// fetch(API_PROXY + API_URL)
 		// 	.then(resp => resp.json())
@@ -49,7 +49,7 @@ class InfoScreen extends React.Component {
 				daily: forecastJson.daily,
 				alerts: (forecastJson.alerts || [])
 			}
-			console.log(nextState)
+			//console.log(nextState)
 			this.setState({forecast: nextState})
 		} catch (e) { 
 			console.log(e) 

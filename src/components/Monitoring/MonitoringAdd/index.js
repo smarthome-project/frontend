@@ -36,7 +36,7 @@ class MonitoringAdd extends React.Component {
 	}
 
 	handleSave() {
-		console.log(this.state)
+		//console.log(this.state)
 		
 		this.props.camerasCallbacks.handleAddCamera({
 			name: this.state.cameraName,

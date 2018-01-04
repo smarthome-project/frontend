@@ -47,7 +47,7 @@ class RoomForm extends React.Component {
 	}
 
 	handleImage(image_path, idx) {
-		console.log(image_path, idx)
+		//console.log(image_path, idx)
 		this.props.handleChange('imagePath', image_path)
 		this.props.handleChange('imageId', idx)
 	}

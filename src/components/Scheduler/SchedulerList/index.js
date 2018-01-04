@@ -110,7 +110,7 @@ class SchedulerList extends React.Component {
 
 	render () {
 
-		console.log(this.state.scheduls)
+		//console.log(this.state.scheduls)
 
 		const tableBody = _.map(this.state.scheduls, (sche) => <tr key={sche.id}>
 			<td>{sche.id}</td>

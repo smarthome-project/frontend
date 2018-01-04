@@ -34,7 +34,7 @@ class AddRoomModal extends React.Component {
 	}
 
 	handleSave() {
-		console.log(this.state)
+		//console.log(this.state)
 		
 		this.props.roomCallbacks.handleAddRoom({
 			name: this.state.roomName,

@@ -22,7 +22,7 @@ class SchedulerForm extends React.Component {
 	}
 
 	showErrorModal(form, errText) {
-		console.log(form, errText)
+		//console.log(form, errText)
 
 		const alertInstance = (
 			<Alert bsStyle="warning">
@@ -63,7 +63,7 @@ class SchedulerForm extends React.Component {
 	}
 
 	saveForm() {
-		console.log(this.props.formsData)
+		//console.log(this.props.formsData)
 		if (this.validateForm())
 			this.props.callbacks.save()
 	}
