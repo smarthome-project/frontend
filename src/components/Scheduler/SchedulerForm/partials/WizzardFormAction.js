@@ -80,8 +80,82 @@ ActionLedRgb.propTypes = {
 
 
 class ActionLedCw extends React.Component {
+	
+	constructor(props) {
+		super(props)
+
+		let firstVal = this.hexToValue(this.props.state.cw) || 0
+
+		this.handleThrotledSave = _.debounce(this.handleThrotledSave.bind(this), 200)
+
+		this.state = {
+			value: firstVal
+		}
+	}
+
+	handleThrotledSave(val) {
+		let numVal, hexVal, cVal, wVal, cValHex, wValHex
+
+		numVal = val
+
+		if (numVal < 0 && numVal > -20) {
+			hexVal = "#ff0000"
+		} else if (numVal <= -20) {
+			hexVal = "#000000"
+		} else {
+			wVal = 255 - numVal
+			cVal = 255 - wVal
+
+			wValHex = wVal.toString(16)
+			cValHex = cVal.toString(16)
+
+			hexVal = `#${(wValHex.length == 1) ? "0" + wValHex : wValHex}${(cValHex.length == 1) ? "0" + cValHex : cValHex}00`
+		}
+
+		this.props.handleChangeState('cw', hexVal)
+	}
+
+	handleChangeState(evt) {
+		let numVal = evt.target.value
+		numVal = (numVal <= -20) ? -40 : (numVal > -20 && numVal < 0) ? 0 : numVal
+		this.handleThrotledSave(numVal)
+		this.setState({value: numVal})
+	}
+
+	hexToValue(hex) {
+		
+		if (hex == "#000000")
+			return -40
+
+		let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+		return result ? parseInt(result[2], 16) : -40
+	}
+
 	render() {
-		return <span> TODO </span>
+
+		const numVal = this.hexToValue(this.props.state.cw)
+
+		return <div className="rangeWrapper">
+
+			<p className="rangeLabel rangeLabel_warm">Ciepłe</p>
+			<p className="rangeLabel rangeLabel_cold">Zimne</p>
+
+			<p className="clearfix">{" "}</p>
+			<p className="clearfix">{" "}</p>
+
+			<input 
+				type="range"
+				min="-40"
+				max="255"
+				step="1"
+				value={this.state.value}
+				onChange={this.handleChangeState.bind(this)} />
+
+			<p className="rangeLabel rangeLabel_off">Wył</p>
+			
+			<p className="clearfix">{" "}</p>
+
+		</div>
 	}
 }
 

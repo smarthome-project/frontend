@@ -34,9 +34,9 @@ class Main extends React.Component {
 							<Route path="/rooms" render={ (props) => <RoomsGrid {...props} devices={this.props.devices} rooms={this.props.rooms} roomCallbacks={this.props.roomCallbacks} /> } />
 							<Route path="/monitoring" render={ (props) => <Monitoring {...props} cameras={this.props.cameras} rooms={this.props.rooms} camerasCallbacks={this.props.camerasCallbacks} /> } />
 							<Route path="/camera/:id" render={ (props) => <MonitoringVideo {...props} cameras={this.props.cameras} rooms={this.props.rooms} camerasCallbacks={this.props.camerasCallbacks} /> } />
-							<Route path="/devices" render={ (props) => <Devices {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} /> } />
+							<Route path="/devices" render={ (props) => <Devices {...props} devices={this.props.devices} rooms={this.props.rooms} inputs={this.props.inputs} deviceCallbacks={this.props.deviceCallbacks} /> } />
 							<Route path="/room/:id"  render={ (props) => <Room {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} roomCallbacks={this.props.roomCallbacks} /> } />
-							<Route path="/scheduler/add"  render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
+							<Route path="/scheduler/add/:devId?"  render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
 							<Route path="/scheduler"  render={ (props) => <SchedulerList {...props} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
 							<Route path="/configuration"  render={ (props) => <Configuration {...props} /> } />
 						</Switch>
@@ -67,6 +67,7 @@ Main.propTypes = {
 	appState: PropTypes.string.isRequired,
 	user: PropTypes.object,
 	rooms: PropTypes.array,
+	inputs: PropTypes.array,
 	devices: PropTypes.array,
 	cameras: PropTypes.array,
 	scheduls: PropTypes.array,

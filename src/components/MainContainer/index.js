@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 import { GuardRoute } from '../shared/GuardRoute'
 import update from 'immutability-helper'
+import _ from 'lodash'
 
 import Main from '../Main'
 import LockScreen from '../LockScreen'
@@ -15,8 +16,9 @@ import {
 
 import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
+import { getInputs } from '../../services/ApiInputs'
 import { getRooms, createRooms } from '../../services/ApiRooms'
-import { getDevices, createDevice, changeStateDevice } from '../../services/ApiDevices'
+import { getDevices, createDevice, changeStateDevice, updateDevice, removeDevice } from '../../services/ApiDevices'
 import { getCameras, createCamera, updateCamera, removeCamera } from '../../services/ApiCameras'
 import { getSchedules, setSchedule } from '../../services/ApiScheduls'
 
@@ -42,9 +44,14 @@ class MainContainer extends React.Component {
 		//Update
 		this.handleChangeStateDevice = this.handleChangeStateDevice.bind(this)
 		this.handleUpdateCamera = this.handleUpdateCamera.bind(this)
+		this.handleUpdateDevice = this.handleUpdateDevice.bind(this)
+
+		//ThrottledUploaders
+		this.uploadNewDeviceState = _.debounce(this.uploadNewDeviceState.bind(this), 300)
 
 		//Remove
 		this.handleRemoveCamera = this.handleRemoveCamera.bind(this)
+		this.handleRemoveDevice = this.handleRemoveDevice.bind(this)
 
 		this.state = {
 			user: {},
@@ -52,6 +59,7 @@ class MainContainer extends React.Component {
 			devices: [],
 			cameras: [],
 			scheduls: [],
+			inputs: [],
 			alarmActive: false,
 			appState: consts.STATE_ACTIVE
 		}
@@ -88,6 +96,10 @@ class MainContainer extends React.Component {
 
 		getSchedules()
 			.then(scheduls => { this.setState({scheduls: scheduls}) })
+			.catch(e => console.log(e))	
+
+		getInputs()
+			.then(inputs => { this.setState({inputs: inputs}) })
 			.catch(e => console.log(e))	
 
 		addEventUserActive(this._handleActivity)
@@ -154,7 +166,8 @@ class MainContainer extends React.Component {
 			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 	}
 
-	handleChangeStateDevice(device, newState) {
+	uploadNewDeviceState(device, newState) {
+		console.log("Real save")
 		changeStateDevice(device, newState)
 			.then(updatedDevice => { 
 				const deviceIndex = this.state.devices.findIndex((device) => device.id == updatedDevice.id)
@@ -170,6 +183,58 @@ class MainContainer extends React.Component {
 			})
 			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
 	}
+
+	handleChangeStateDevice(device, newState) {
+		const deviceIndex = this.state.devices.findIndex(d => d.id == device.id)
+		this.setState(
+			update(this.state, {
+				devices: {
+					[deviceIndex]: {
+						state: {$set: newState}
+					}
+				}
+			})
+		)
+
+		console.log("Change state")
+
+		this.uploadNewDeviceState(device, newState)
+	}
+
+	handleUpdateDevice(device) {
+		updateDevice(device)
+			.then(changedDevice => { 
+				const deviceIndex = _.findIndex(this.state.devices, d => d.id == device.id)
+				
+				this.setState(
+					update(this.state, {
+						devices: {
+							[deviceIndex]: {
+								$set: changedDevice
+							}
+						}
+					})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
+	handleRemoveDevice(deviceId) {
+		removeDevice(deviceId)
+			.then(resp => { 
+				const deviceIndex = _.findIndex(this.state.devices, d => d.id == deviceId)
+				this.setState(
+					update(this.state, {
+						devices: {
+							$splice: [[deviceIndex, 1]]
+						}
+					})
+				)
+			})
+			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+	}
+
+
 
 	//Cameras
 	handleAddCamera(camera) {
@@ -187,14 +252,6 @@ class MainContainer extends React.Component {
 			.then(changedCamera => { 
 				const cameraIndex = _.findIndex(this.state.cameras, c => c.id == camera.id)
 				
-				console.log(update(this.state, {
-						cameras: {
-							[cameraIndex]: {
-								$set: changedCamera
-							}
-						}
-					}))
-
 				this.setState(
 					update(this.state, {
 						cameras: {
@@ -250,6 +307,7 @@ class MainContainer extends React.Component {
 			<Main appState={this.state.appState}
 				user={this.state.user}
 				rooms={this.state.rooms}
+				inputs={this.state.inputs}
 				devices={this.state.devices}
 				cameras={this.state.cameras}
 				scheduls={this.state.scheduls}
@@ -258,7 +316,9 @@ class MainContainer extends React.Component {
 				}}
 				deviceCallbacks={{
 					handleAddDevice: this.handleAddDevice,
-					handleChangeStateDevice: this.handleChangeStateDevice
+					handleChangeStateDevice: this.handleChangeStateDevice,
+					handleUpdateDevice: this.handleUpdateDevice,
+					handleRemoveDevice: this.handleRemoveDevice
 				}}
 				camerasCallbacks={{
 					handleAddCamera: this.handleAddCamera,

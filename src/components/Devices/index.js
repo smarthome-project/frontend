@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { getDeviceTypes } from '../../services/ApiDevices'
 
 import AddDeviceModal from './AddDeviceModal'
+import EditDeviceModal from './EditDeviceModal'
 import SingleDevice from './SingleDevice'
 
 import {Icon} from '../shared/Icon'
@@ -17,9 +18,14 @@ class Devices extends React.Component {
 
 	constructor(props) {
 		super(props)
+
 		this.openModal = this.openModal.bind(this)
+		this.openEdit = this.openEdit.bind(this)
 		this.closeModal = this.closeModal.bind(this)
+		this.closeEdit = this.closeEdit.bind(this)
+
 		this.state = {
+			editFormId: null,
 			modalShow: false,
 			deviceTypeEnums: []
 		}
@@ -39,6 +45,14 @@ class Devices extends React.Component {
 		this.setState({modalShow: false})
 	}
 
+	openEdit(id) {
+		this.setState({editFormId: id})
+	}
+
+	closeEdit() {
+		this.setState({editFormId: null})
+	}
+
 	render() {
 
 		const room_id = this.props.room_id || null
@@ -47,6 +61,7 @@ class Devices extends React.Component {
 				<SingleDevice 
 					key={device.id} 
 					device={device}
+					openEdit={this.openEdit}
 					deviceCallbacks={this.props.deviceCallbacks} />
 			))
 
@@ -69,10 +84,22 @@ class Devices extends React.Component {
 					<AddDeviceModal 
 						showModal={this.state.modalShow}
 						rooms={this.props.rooms}
+						inputs={this.props.inputs}
 						currentRoomId={this.props.room_id}
 						deviceTypeEnums={this.state.deviceTypeEnums}
 						deviceCallbacks={this.props.deviceCallbacks}
 						callbackClose={this.closeModal} />
+
+					<EditDeviceModal
+						rooms={this.props.rooms}
+						inputs={this.props.inputs}
+						devices={this.props.devices}
+						currentRoomId={this.props.room_id}
+						deviceId={this.state.editFormId}
+						showModal={(this.state.editFormId && this.state.editFormId > 0) ? true : false}
+						callbackClose={this.closeEdit}
+						deviceTypeEnums={this.state.deviceTypeEnums}
+						deviceCallbacks={this.props.deviceCallbacks} />
 				</div>
 			)
 
@@ -86,6 +113,7 @@ Devices.propTypes = {
 	}),
 	room_id: PropTypes.number,
 	devices: PropTypes.array,
+	inputs: PropTypes.array,
 	rooms: PropTypes.array,
 	deviceCallbacks: PropTypes.object
 }

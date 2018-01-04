@@ -8,6 +8,7 @@ import CronSchedule from '../../../utils/cronTranslate'
 
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import update from 'immutability-helper'
 import consts from './../../../utils/constants'
 
 
@@ -19,17 +20,55 @@ class SchedulerAdd extends React.Component {
 		this.handleSave = this.handleSave.bind(this)
 		this.handleChange = this.handleChange.bind(this)
 
+		const preDevId = (this.props.match.params.devId) ? this.props.match.params.devId : 0
+
+		let preActionCron = {}
+
+		if (_.size(this.props.devices) > 0 && this.props.match.params.devId) {
+			let choosedDeviceIndex = _.findIndex(this.props.devices, d => d.id == this.props.match.params.devId)
+			preActionCron = (this.props.devices[choosedDeviceIndex]).state
+		}
+
 		this.state = {
 			days: ['*'],
 			hours: ['12'], 
 			min: ['00'],
 			one_time: '12:00',
 			one_day: '1',
+			every_hh: 1,
+			every_mm: 1,
+			multiple_h: [],
 			day_type: consts.CRON_DAYS_EVERY,
 			time_type: consts.CRON_TIME_SPECIFIC_ONE,
-			choosedDeviceId:  0,
-			actionCronState: {},
+			choosedDeviceId: preDevId,
+			actionCronState: preActionCron,
 			redirectAfterSave: false
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (_.size(this.props.devices) == 0 && _.size(nextProps.devices) > 0) {
+
+			const preDevId = (this.props.match.params.devId) ? this.props.match.params.devId : 0
+
+			let preActionCron = {}
+
+			if (this.props.match.params.devId) {
+				let choosedDeviceIndex = _.findIndex(nextProps.devices, d => d.id == this.props.match.params.devId)
+				preActionCron = (nextProps.devices[choosedDeviceIndex]).state
+			}
+
+			this.setState(
+				update(this.state, {
+					choosedDeviceId: {
+						$set: preDevId
+					},
+					actionCronState: {
+						$set: preActionCron
+					}
+				})
+			)
+
 		}
 	}
 

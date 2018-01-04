@@ -22,6 +22,10 @@ class DeviceForm extends React.Component {
 
 		let roomId_options = _.concat(noRoom, rooms)
 
+		let inputs = []
+
+		console.log(this.props.inputs)
+
 		return (
 			<form>
 				<Row>
@@ -54,6 +58,7 @@ class DeviceForm extends React.Component {
 					<FormControl 
 						componentClass="select" 
 						placeholder="Typ urządzenia" 
+						disabled={this.props.blockType}
 						onChange={this.handleChange.bind(this, 'type')}
 						value={this.props.formData.type} >
 						
@@ -84,6 +89,7 @@ DeviceForm.propTypes = {
 		type: PropTypes.string,
 		room_id: PropTypes.number
 	}).isRequired,
+	blockType: PropTypes.bool,
 	handleChange: PropTypes.func.isRequired,
 	deviceTypeEnums: PropTypes.array,
 	rooms: PropTypes.array

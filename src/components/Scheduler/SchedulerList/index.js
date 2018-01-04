@@ -65,6 +65,27 @@ class SchedulerList extends React.Component {
 			</span>
 	} 
 
+	cwHexToPercent(hex) {
+		
+		if (hex == "#000000")
+			return `Zgaś światło.`
+
+		let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+		result = result ? parseInt(result[2], 16) : null
+
+		let percent = parseInt((result / 255) * 100 * 10) / 10
+
+		return `Ustaw ciepło na ${percent}%.`
+	}
+
+	rgbToColor(hex) {
+		
+		if (hex == "#000000")
+			return `Zgaś światło.`
+
+		return `Ustaw kolor na <div class="wizard_rgb_color" style="background-color: ${hex}"> </div> `
+	}
+
 	getActionByState(state) {
 		
 		const naming = (key, value) => {
@@ -72,7 +93,9 @@ class SchedulerList extends React.Component {
 				case 'active':
 					return (value) ? 'Włącz. ' : 'Wyłącz. '
 				case 'rgb':
-					return `Ustaw kolor na ${value}. `
+					return this.rgbToColor(value)
+				case 'cw':
+					return this.cwHexToPercent(value)
 			}
 		}
 
@@ -94,7 +117,7 @@ class SchedulerList extends React.Component {
 			<td>{sche.room_name}</td>
 			<td>{sche.device_name}</td>
 			<td>{sche.cronString}</td>
-			<td>{this.getActionByState(sche.state)}</td>
+			<td dangerouslySetInnerHTML={{__html: this.getActionByState(sche.state)}}></td>
 			<td>{this.getActived(sche.active)}</td>
 			<td>{this.getActions(sche.id)}</td>
 		</tr>)

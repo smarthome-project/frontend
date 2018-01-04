@@ -24,11 +24,15 @@ class WizzardFormTime extends React.Component {
 		}
 
 		if (value == consts.CRON_TIME_EVERY_HH) {
+			this.props.callbacks.change('every_hh', 1)
+			this.props.callbacks.change('every_mm', 1)
 			this.props.callbacks.change('hours', ['*'])
 			this.props.callbacks.change('min', ['*'])
 		}
 
 		if (value == consts.CRON_TIME_EVERY_MM) {
+			this.props.callbacks.change('every_hh', 1)
+			this.props.callbacks.change('every_mm', 1)
 			this.props.callbacks.change('hours', ['*'])
 			this.props.callbacks.change('min', ['*'])
 		}
@@ -42,6 +46,18 @@ class WizzardFormTime extends React.Component {
 		if (value == consts.CRON_TIME_SPECIFIC) {
 			this.props.callbacks.change('hours', ['*'])
 			this.props.callbacks.change('min', ['*'])
+		}
+
+		if (field == 'every_hh') {
+			let cronHH = [`*/${value}`]
+			this.props.callbacks.change('min', ['*'])
+			this.props.callbacks.change('hours', cronHH)
+		}
+
+		if (field == 'every_mm') {
+			let cronMM = [`*/${value}`]
+			this.props.callbacks.change('min', cronMM)
+			this.props.callbacks.change('hours', ['*'])
 		}
 
 		this.props.callbacks.change(field, value)
@@ -64,9 +80,33 @@ class WizzardFormTime extends React.Component {
 			</FormGroup>
 		)
 
-		let form_every_hh = null
-		let form_every_mm = null
-		let form_time_specific = null
+		let form_every_hh = (
+			<FormGroup controlId="form_every_hh">
+				<Col sm={2}>
+					<ControlLabel></ControlLabel>
+				</Col>
+				<Col sm={8}>
+					<FormControl
+						type="number"
+						onChange={this.handleChange.bind(this, 'every_hh')}
+						value={this.props.formsData.every_hh} />
+				</Col>
+			</FormGroup>
+		)
+
+		let form_every_mm = (
+			<FormGroup controlId="form_every_mm">
+				<Col sm={2}>
+					<ControlLabel></ControlLabel>
+				</Col>
+				<Col sm={8}>
+					<FormControl
+						type="number"
+						onChange={this.handleChange.bind(this, 'every_mm')}
+						value={this.props.formsData.every_mm} />
+				</Col>
+			</FormGroup>
+		)
 
 		let subForm = 
 			(this.props.formsData.time_type == consts.CRON_TIME_SPECIFIC_ONE) ? <div>{form_specific_one}</div> :
@@ -93,7 +133,6 @@ class WizzardFormTime extends React.Component {
 								<option value={consts.CRON_TIME_SPECIFIC_ONE}>dokładnie o</option>
 								<option value={consts.CRON_TIME_EVERY_HH}>co wybraną ilość godzin</option>
 								<option value={consts.CRON_TIME_EVERY_MM}>co wybraną ilość minut</option>
-								<option value={consts.CRON_TIME_SPECIFIC}>o wybranych godzinach</option>
 							</FormControl>
 						</Col>
 					</FormGroup>

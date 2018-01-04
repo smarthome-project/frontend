@@ -63,6 +63,7 @@ class SchedulerForm extends React.Component {
 	}
 
 	saveForm() {
+		console.log(this.props.formsData)
 		if (this.validateForm())
 			this.props.callbacks.save()
 	}

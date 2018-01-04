@@ -1,7 +1,7 @@
 #devicesGrid {
 
 	.panel {
-		height: 150px;
+		height: 160px;
 		display: flex;
 	 	flex-flow: column;
 
@@ -85,6 +85,29 @@
 		.deviceColor_preview_color {
 			width: 100%;
 			height: 100%;
+		}
+	}
+
+	.rangeWrapper {
+
+		position: relative;
+
+		p.rangeLabel {
+			position: absolute;
+			display: inline-block;
+			font-size: 13px;
+		}
+
+		p.rangeLabel_warm {
+			right: 0px;
+		}
+
+		p.rangeLabel_cold {
+			left: 22px;
+		}
+
+		p.rangeLabel_off {
+			left: 0px;
 		}
 	}
 }

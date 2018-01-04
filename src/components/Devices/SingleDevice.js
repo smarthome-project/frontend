@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 
 import deviceStyle from './device-style.scss'
@@ -83,10 +84,22 @@ DeviceLedRgb.propTypes = {
 
 class DeviceLedCw extends React.Component {
 	
-	handleChangeState(evt) {
+	constructor(props) {
+		super(props)
+
+		let firstVal = this.hexToValue(this.props.state.cw) || 0
+
+		this.handleThrotledSave = _.debounce(this.handleThrotledSave.bind(this), 200)
+
+		this.state = {
+			value: firstVal
+		}
+	}
+
+	handleThrotledSave(val) {
 		let numVal, hexVal, cVal, wVal, cValHex, wValHex
 
-		numVal = evt.target.value
+		numVal = val
 
 		if (numVal < 0 && numVal > -20) {
 			hexVal = "#ff0000"
@@ -105,6 +118,13 @@ class DeviceLedCw extends React.Component {
 		this.props.handleChangeState('cw', hexVal)
 	}
 
+	handleChangeState(evt) {
+		let numVal = evt.target.value
+		numVal = (numVal <= -20) ? -40 : (numVal > -20 && numVal < 0) ? 0 : numVal
+		this.handleThrotledSave(numVal)
+		this.setState({value: numVal})
+	}
+
 	hexToValue(hex) {
 		
 		if (hex == "#000000")
@@ -118,14 +138,26 @@ class DeviceLedCw extends React.Component {
 
 		const numVal = this.hexToValue(this.props.state.cw)
 
-		return <div>
+		return <div className="rangeWrapper">
+
+			<p className="rangeLabel rangeLabel_warm">Ciepłe</p>
+			<p className="rangeLabel rangeLabel_cold">Zimne</p>
+
+			<p className="clearfix">{" "}</p>
+			<p className="clearfix">{" "}</p>
+
 			<input 
 				type="range"
 				min="-40"
 				max="255"
 				step="1"
-				value={numVal}
-				onInput={this.handleChangeState.bind(this)} />
+				value={this.state.value}
+				onChange={this.handleChangeState.bind(this)} />
+
+			<p className="rangeLabel rangeLabel_off">Wył</p>
+			
+			<p className="clearfix">{" "}</p>
+
 		</div>
 	}
 }
@@ -139,7 +171,6 @@ class SingleDevice extends React.Component {
 
 	constructor(props) {
 		super(props)
-
 		this.handleChangeState = this.handleChangeState.bind(this)
 	}
 
@@ -148,9 +179,11 @@ class SingleDevice extends React.Component {
 		let newState = this.props.device.state
 		newState[stateName] = stateVal
 
-		console.log(stateName, stateVal)
-
 		this.props.deviceCallbacks.handleChangeStateDevice(this.props.device, newState)
+	}
+
+	handleOpenEdit(evt) {
+		this.props.openEdit(this.props.device.id)
 	}
 
 	render() {
@@ -168,15 +201,12 @@ class SingleDevice extends React.Component {
 					{deviceType_dict[device.type]}
 				</span>
 				<span className="header-icons">
-					<a className="pull-right deviceActionHeader">
+					<a className="pull-right deviceActionHeader" onClick={this.handleOpenEdit.bind(this)}>
 						<Icon name="pencil" size={1} fw />
 					</a>
-					<a className="pull-right deviceActionHeader">
+					<Link className="pull-right deviceActionHeader" to={`/scheduler/add/${device.id}`} >
 						<Icon name="calendar" size={1} fw />
-					</a>
-					<a className="pull-right deviceActionHeader">
-						<Icon name="font" size={1} fw />
-					</a>
+					</Link>
 				</span>
 			</h2>
 

@@ -56,7 +56,7 @@ class NavigationTop extends React.Component {
 						</NavItem>
 
 						<NavItem eventKey={2} componentClass={Link} href="/rooms" to="/rooms" onClick={this.close} active={location.pathname === '/rooms'}>
-							<Icon name="home"/> Pomieszczenia
+							<Icon name="home"/> Pokoje
 						</NavItem>
 
 						<NavItem eventKey={3} componentClass={Link} href="/devices" to="/devices" onClick={this.close} active={location.pathname === '/devices'}>
@@ -64,7 +64,7 @@ class NavigationTop extends React.Component {
 						</NavItem>
 
 						<NavItem eventKey={4} componentClass={Link} href="/scheduler" to="/scheduler" onClick={this.close} active={location.pathname === '/scheduler'}>
-							<Icon name="calendar"/> Harmonogramy
+							<Icon name="calendar"/> Harmonogram
 						</NavItem>
 					</Nav>
 
@@ -77,7 +77,7 @@ class NavigationTop extends React.Component {
 						</NavDropdown>
 
 						<NavItem eventKey={6} onClick={this.close && this.props.alarmCallbacks.handleActiveAlarm}>
-							<Icon name="lock"/> Zablokuj
+							<Icon name="lock"/>
 						</NavItem>
 					</Nav>
 
