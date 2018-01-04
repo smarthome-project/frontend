@@ -7,11 +7,32 @@ import { FormGroup, ControlLabel, FormControl, Button, Row, Col } from 'react-bo
 
 class DeviceForm extends React.Component {
 
+	constructor(props){
+		super(props)
+		this.handleChange = this.handleChange.bind(this)
+	}
+
 	handleChange(field, evt) {
-		this.props.handleChange(field, evt.target.value)
+		
+		let val = evt.target.value
+
+		if (field == 'type') {
+			let inputsFiltered = _.filter(this.props.inputs, inp => inp.type == val)
+			let inNum = (inputsFiltered[0]) ? inputsFiltered[0].number : 0
+			this.props.handleChange('input_id', inNum)
+		}
+
+		this.props.handleChange(field, val)
 	}
 
 	render() {
+
+		let inputsNumbers_options = _(this.props.inputs)
+			.filter(inp => inp.type == this.props.formData.type)
+			.map((inp, i) => <option key={`iNum_${i}`} value={inp.number}>Wejście {inp.number}</option>)
+			.value()
+
+		
 
 		let deviceType_options = (this.props.deviceTypeEnums) ? _.map( this.props.deviceTypeEnums, (typEnum, i) => 
 			<option key={`d_${i}`} value={typEnum.type}>{typEnum.pl_name}</option> ) : null
@@ -21,10 +42,6 @@ class DeviceForm extends React.Component {
 				<option key={`r_${i+1}`} value={room.id}>{room.name}</option> ) : null
 
 		let roomId_options = _.concat(noRoom, rooms)
-
-		let inputs = []
-
-		console.log(this.props.inputs)
 
 		return (
 			<form>
@@ -43,12 +60,13 @@ class DeviceForm extends React.Component {
 						<FormGroup controlId="deviceForm_input_id">
 							<ControlLabel>Numer wej.</ControlLabel>
 							<FormControl 
-								type="number" 
-								placeholder="Num"
-								min={1}
-								max={100}
+								componentClass="select" 
+								placeholder="select"
 								onChange={this.handleChange.bind(this, 'input_id')}
-								value={this.props.formData.input_id} />
+								value={this.props.formData.input_id} >
+								
+								{inputsNumbers_options}
+							</FormControl>
 						</FormGroup>
 					</Col>
 				</Row>
