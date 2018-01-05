@@ -27,12 +27,8 @@ class DeviceForm extends React.Component {
 
 	render() {
 
-		let inputsNumbers_options = _(this.props.inputs)
-			.filter(inp => inp.type == this.props.formData.type)
-			.map((inp, i) => <option key={`iNum_${i}`} value={inp.number}>Wejście {inp.number}</option>)
-			.value()
-
-		
+		let filtered_inputs = _.filter(this.props.inputs, inp => inp.type == this.props.formData.type)
+		let inputsNumbers_options = _.map(filtered_inputs, (inp, i) => <option key={`iNum_${i}`} value={inp.number}>Wejście {inp.number}</option>)
 
 		let deviceType_options = (this.props.deviceTypeEnums) ? _.map( this.props.deviceTypeEnums, (typEnum, i) => 
 			<option key={`d_${i}`} value={typEnum.type}>{typEnum.pl_name}</option> ) : null

@@ -23,7 +23,9 @@ let rootRouter = (
 					<GuardRoute path="/" component={MainContainer} />
 				</Switch>
 				<div style={alertsStyle} >
-					<div className="container" id="alertsMountPlace" />
+					<CSSTransitionGroup transitionName="alertTrans-" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+						<div className="container" id="alertsMountPlace" />
+					</CSSTransitionGroup>
 				</div>
 			</div>
 		</Router>

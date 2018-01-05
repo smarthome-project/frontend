@@ -49,30 +49,6 @@ class MonitoringForm extends React.Component {
 							value={this.props.formData.cameraAddres} />
 					</FormGroup>
 
-					<Row>
-						<Col xs={6}>
-							<FormGroup controlId="cameraForm_cameraUser">
-								<ControlLabel>Użytkownik</ControlLabel>
-								<FormControl 
-									type="text" 
-									placeholder="Użytkownik"
-									onChange={this.handleChange.bind(this, 'login')}
-									value={this.props.formData.login} />
-							</FormGroup>
-						</Col>
-
-						<Col xs={6}>
-							<FormGroup controlId="cameraForm_cameraPass">
-								<ControlLabel>Hasło</ControlLabel>
-								<FormControl 
-									type="password" 
-									placeholder="Hasło"
-									onChange={this.handleChange.bind(this, 'pass')}
-									value={this.props.formData.pass} />
-							</FormGroup>
-						</Col>
-					</Row>
-
 					<FormGroup controlId="cameraForm_cameraRoom">
 						<ControlLabel>Pomieszczenie</ControlLabel>
 						<FormControl 

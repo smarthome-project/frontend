@@ -9,7 +9,6 @@ import Switch from '../shared/Switch'
 import { Icon } from '../shared/Icon'
 import { SketchPicker } from 'react-color'
 import { Panel, Col, Button } from 'react-bootstrap'
-import ReactBootstrapSlider from 'react-bootstrap-slider';
 
 class DevicePower extends React.Component {
 	

@@ -7,6 +7,7 @@ import _ from 'lodash'
 
 import Main from '../Main'
 import LockScreen from '../LockScreen'
+import { Alert } from 'react-bootstrap'
 import consts from '../../utils/constants'
 import _config from '../../utils/config'
 
@@ -28,9 +29,11 @@ class MainContainer extends React.Component {
 	constructor(props) {
 		super(props)
 
+		//Alarms
 		this.handleActiveAlarm = this.handleActiveAlarm.bind(this)
 		this.handleCheckNewAlarmState = this.handleCheckNewAlarmState.bind(this)
 
+		//Info screensaver
 		this.resetInactiveTimer = this.resetInactiveTimer.bind(this)
 		this.timeToInactive = 1000 * _config.timeToScreensaverInSec
 		this.inActiveTimer = null
@@ -52,6 +55,10 @@ class MainContainer extends React.Component {
 		//Remove
 		this.handleRemoveCamera = this.handleRemoveCamera.bind(this)
 		this.handleRemoveDevice = this.handleRemoveDevice.bind(this)
+
+		//Misc
+		this.showErrorModal = this.showErrorModal.bind(this)
+		this.handleErrorApi = this.handleErrorApi.bind(this)
 
 		this.state = {
 			user: {},
@@ -80,27 +87,27 @@ class MainContainer extends React.Component {
 
 		checkAlarmState()
 			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
 
 		getRooms()
 			.then(rooms => { this.setState({rooms: rooms}) })
-			.catch(e => console.log(e))
+			.catch(e => this.handleErrorApi(e))
 
 		getDevices()
 			.then(devices => { this.setState({devices: devices}) })
-			.catch(e => console.log(e))
+			.catch(e => this.handleErrorApi(e))
 
 		getCameras()
 			.then(cameras => { this.setState({cameras: cameras}) })
-			.catch(e => console.log(e))
+			.catch(e => this.handleErrorApi(e))
 
 		getSchedules()
 			.then(scheduls => { this.setState({scheduls: scheduls}) })
-			.catch(e => console.log(e))	
+			.catch(e => this.handleErrorApi(e))	
 
 		getInputs()
 			.then(inputs => { this.setState({inputs: inputs}) })
-			.catch(e => console.log(e))	
+			.catch(e => this.handleErrorApi(e))	
 
 		addEventUserActive(this._handleActivity)
 		this.resetInactiveTimer()
@@ -114,7 +121,7 @@ class MainContainer extends React.Component {
 		if (prevState.alarmActive !== this.state.alarmActive)
 			updateAlarmState(this.state.alarmActive)
 				.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
-				.catch(e => { console.log(e); this.props.history.push('/login', null) })
+				.catch(e => { this.handleErrorApi(e); this.props.history.push('/login', null) })
 	}
 
 	resetInactiveTimer() {
@@ -125,6 +132,46 @@ class MainContainer extends React.Component {
 	}
 
 
+	/*===================================
+	=          Misc functions           =
+	===================================*/
+	
+	showErrorModal(mainErr, subErr, type, time = 3000) {
+
+		const alertInstance = (
+			<Alert bsStyle={type}>
+				<strong>{mainErr}</strong> {subErr}
+			</Alert>
+		)
+
+		ReactDom.render(alertInstance, document.getElementById('alertsMountPlace'))
+		setTimeout(function() {
+			ReactDom.render(null, document.getElementById('alertsMountPlace'))
+		}, time)
+	}
+	
+	handleErrorApi(form, e) {
+		const response = e.json()
+		response.then(err => {
+			
+			console.log(err[0])
+			
+			const errMsg = err[0].message
+			const errName = err[0].path
+			const errForm = form
+			
+			console.log(errForm, errName, errMsg)
+
+			let error = (consts.ERRORS_DICT[errForm] && consts.ERRORS_DICT[errForm][errName][errMsg]) ? 
+				consts.ERRORS_DICT[errForm][errName][errMsg] : null
+			
+			console.log(error)
+
+			if (error)
+				this.showErrorModal(error.mainErr, error.subErr, 'warning')
+		})
+	}
+
 	/*============================================
 	=            Handlers / callbacks            =
 	============================================*/
@@ -134,7 +181,7 @@ class MainContainer extends React.Component {
 	handleCheckNewAlarmState() {
 		checkAlarmState()
 			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('setAlarm', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleActiveAlarm() {
@@ -152,7 +199,7 @@ class MainContainer extends React.Component {
 					update(this.state, {rooms: {$push: [newRoom]}})
 				) 
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('postRoom', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	//Devices
@@ -163,7 +210,7 @@ class MainContainer extends React.Component {
 					update(this.state, {devices: {$push: [newDevice]}})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('postDevice', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	uploadNewDeviceState(device, newState) {
@@ -181,7 +228,7 @@ class MainContainer extends React.Component {
 					})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('putDevice', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleChangeStateDevice(device, newState) {
@@ -216,7 +263,7 @@ class MainContainer extends React.Component {
 					})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('putDevice', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleRemoveDevice(deviceId) {
@@ -231,7 +278,7 @@ class MainContainer extends React.Component {
 					})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('deleteDevice', e); /* this.props.history.push('/login', null) */ })
 	}
 
 
@@ -244,7 +291,7 @@ class MainContainer extends React.Component {
 					update(this.state, {cameras: {$push: [newCamera]}})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('postCamera', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleUpdateCamera(camera) {
@@ -262,7 +309,7 @@ class MainContainer extends React.Component {
 					})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('putCamera', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleRemoveCamera(camId) {
@@ -277,7 +324,7 @@ class MainContainer extends React.Component {
 					})
 				)
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('deleteCamera', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	//Schedules
@@ -291,9 +338,9 @@ class MainContainer extends React.Component {
 				//reload scheduls:
 				getSchedules()
 					.then(scheduls => { this.setState({scheduls: scheduls}) })
-					.catch(e => console.log(e))
+					.catch(e => this.handleErrorApi(e))
 			})
-			.catch(e => { console.log(e); /* this.props.history.push('/login', null) */ })
+			.catch(e => { this.handleErrorApi('postSchedule', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	/*==============================

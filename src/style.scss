@@ -1,0 +1,16 @@
+.alertTrans-enter {
+	opacity: 0.01;
+}
+.alertTrans-enter.alertTrans-enter-active {
+	opacity: 1;
+	transition: opacity 1s;
+	transition-delay: 1s;
+}
+
+.alertTrans-leave {
+	opacity: 1;
+}
+.alertTrans-leave.alertTrans-leave-active {
+	opacity: 0.01;
+	transition: opacity 1s;
+}	

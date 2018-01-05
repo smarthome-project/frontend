@@ -17,24 +17,36 @@ class SchedulerList extends React.Component {
 
 		this.convertCron = new CronSchedule()
 
-		let schedules = props.scheduls
-		for(let i = 0; i < _.size(schedules); i++) {
-			this.convertCron.cronToString(schedules[i].cron)
-				.then(cronString => schedules[i].cronString = cronString)
-				.catch(e => console.log(e))
-		}
-
-		this.state = {scheduls: schedules}
+		this.state = {scheduls: []}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidMount() {
+		if (_.size(this.props.scheduls) < 1)
+			return
+
+		let schedules = this.props.scheduls
+		let processing = _.after(_.size(schedules), () => {
+			this.setState({scheduls: schedules})
+		})
+
+		for(let i = 0; i < _.size(schedules); i++) {
+			this.convertCron.cronToString(schedules[i].cron)
+				.then(cronString => {
+					schedules[i].cronString = cronString
+					processing()
+				})
+				.catch(e => console.log(e))
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
 		if(!this.props.scheduls)
 			return
 
-		if(_.isEqual(prevProps, this.props))
+		if(_.isEqual(nextProps, this.props))
 			return
-		
-		let schedules = this.props.scheduls
+
+		let schedules = nextProps.scheduls
 		let processing = _.after(_.size(schedules), () => {
 			this.setState({scheduls: schedules})
 		})

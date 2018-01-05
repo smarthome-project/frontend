@@ -1,6 +1,6 @@
 import config from '../utils/config'
 import consts from '../utils/constants'
-import CryptoJS from 'crypto-js'
+import { SHA512, enc } from 'crypto-js'
 
 const API_URL = `http://${location.hostname}:${config.serverPort}`
 
@@ -15,8 +15,6 @@ function handleErrors(resp) {
 		throw Error(resp.statusText)
 	return resp
 }
-
-
 
 export const blindCheckToken = () => { return (LOCAL_TOKEN()) ? true : false }
 
@@ -47,7 +45,7 @@ export const checkToken = () => {
 
 export const getToken = (login, pass) => {
 
-	const hashPass = CryptoJS.SHA512(pass).toString(CryptoJS.enc.Base64)
+	const hashPass = SHA512(pass).toString(enc.Base64)
 
 	//console.log(hashPass)
 

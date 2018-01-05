@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import _ from 'lodash'
 
+import logoImg from '../../assets/images/logo.png'
+
 import consts from '../../utils/constants'
 import { checkToken, getToken } from '../../services/ApiAuth'
 import UserLoginStyles from './style.scss'
@@ -110,7 +112,7 @@ class UserLogin extends React.Component {
 
 							<Panel header={loginPanelTitle}>
 
-								<Image className='loginImage' src='http://via.placeholder.com/200x100' rounded />
+								<Image className='loginImage' src={logoImg} rounded />
 
 									<FormGroup controlId='signup_login' validationState={this.state.validationState}>
 										<FormControl 

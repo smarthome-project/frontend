@@ -31,6 +31,18 @@ export default {
 		5: 'Piątek',
 		6: 'Sobote',
 		0: 'Niedziele'
+	},
+
+	//errForm -> errName -> errMsg
+	ERRORS_DICT: {
+		'postRoom': {
+			'name': {
+				'Validation len on name failed': {mainErr: 'Błąd dodania pomieszczenia', subErr: 'nieprawidłowa długość nazwy.'}
+			},
+			'image_path': {
+				'Validation len on image_path failed': {mainErr: 'Błąd dodania pomieszczenia', subErr: 'wybierz zdjęcie.'}
+			}
+		}
 	}
 
 }
