@@ -209,6 +209,7 @@ class MainContainer extends React.Component {
 	========================================*/
 	
 	rooms_refresh() {
+		console.log("Refreshing rooms.")
 		getRooms()
 			.then(rooms => { this.setState({rooms: rooms}) })
 			.catch(e => this.handleErrorApi(e))
@@ -216,6 +217,7 @@ class MainContainer extends React.Component {
 
 
 	devices_refresh() {
+		console.log("Refreshing device.")
 		getDevices()
 			.then(devices => { this.setState({devices: devices}) })
 			.catch(e => this.handleErrorApi(e))
@@ -223,6 +225,7 @@ class MainContainer extends React.Component {
 
 
 	cameras_refresh() {
+		console.log("Refreshing camera.")
 		getCameras()
 			.then(cameras => { this.setState({cameras: cameras}) })
 			.catch(e => this.handleErrorApi(e))
@@ -230,6 +233,7 @@ class MainContainer extends React.Component {
 
 
 	scheduls_refresh() {
+		console.log("Refreshing schedule.")
 		getSchedules()
 			.then(scheduls => { this.setState({scheduls: scheduls}) })
 			.catch(e => this.handleErrorApi(e))	
@@ -237,6 +241,7 @@ class MainContainer extends React.Component {
 
 
 	inputs_refresh() {
+		console.log("Refreshing inputs.")
 		getInputs()
 			.then(inputs => { this.setState({inputs: inputs}) })
 			.catch(e => this.handleErrorApi(e))	
@@ -244,6 +249,7 @@ class MainContainer extends React.Component {
 
 
 	alarmActive_refresh() {
+		console.log("Refreshing alarmActive.")
 		checkAlarmState()
 			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
 			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
