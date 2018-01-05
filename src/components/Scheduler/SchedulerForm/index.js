@@ -41,13 +41,15 @@ class SchedulerForm extends React.Component {
 		let days, hours, min, choosedDeviceId, actionCronState
 		({days, hours, min, choosedDeviceId, actionCronState} = this.props.formsData)
 		
-		if (!days || !_.isArray(days) || days == []) {
+		console.log(days, hours, min, choosedDeviceId, actionCronState)
+
+		if (!days || !_.isArray(days) || days == "" || !days[0] || days[0] == "" || days[0] == "*/") {
 			this.showErrorModal('days', "Wypełnij prawidłowo pola związane z datą.")
 			return false
-		} else if (!hours || !_.isArray(hours) || hours == []) {
+		} else if (!hours || !_.isArray(hours) || hours == "" || !hours[0] || hours[0] == "" || hours[0] == "*/") {
 			this.showErrorModal('hours', "Wypełnij prawidłowo pola związane z czasem.")
 			return false
-		} else if (!min || !_.isArray(min) || min == []) {
+		} else if (!min || !_.isArray(min) || min == "" || !min[0] || min[0] == "" || min[0] == "*/") {
 			this.showErrorModal('min', "Wypełnij prawidłowo pola związane z czasem.")
 			return false
 		} else if (!choosedDeviceId || choosedDeviceId <= 0) {

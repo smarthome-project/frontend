@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 import { GuardRoute } from '../shared/GuardRoute'
 import update from 'immutability-helper'
+import io from 'socket.io-client'
 import _ from 'lodash'
 
 import Main from '../Main'
@@ -28,6 +29,28 @@ class MainContainer extends React.Component {
 
 	constructor(props) {
 		super(props)
+
+		//Sockets:
+		this.socket = io(`http://${location.hostname}:${_config.serverPort}`)
+		this.socket.on('connect', () => console.log('Socket connected.'))
+
+		this.socket.on('room:post', refresh => this.rooms_refresh())
+		this.socket.on('device:post', refresh => this.devices_refresh())
+		this.socket.on('camera:post', refresh => this.cameras_refresh())
+		this.socket.on('schedul:post', refresh => this.scheduls_refresh())
+		this.socket.on('alarmActive:post', refresh => this.alarmActive_refresh())
+
+		this.socket.on('room:put', refresh => this.rooms_refresh())
+		this.socket.on('device:put', refresh => this.devices_refresh())
+		this.socket.on('camera:put', refresh => this.cameras_refresh())
+		this.socket.on('schedul:put', refresh => this.scheduls_refresh())
+		this.socket.on('alarmActive:put', refresh => this.alarmActive_refresh())
+
+		this.socket.on('room:delete', refresh => this.rooms_refresh())
+		this.socket.on('device:delete', refresh => this.devices_refresh())
+		this.socket.on('camera:delete', refresh => this.cameras_refresh())
+		this.socket.on('schedul:delete', refresh => this.scheduls_refresh())
+		this.socket.on('alarmActive:delete', refresh => this.alarmActive_refresh())
 
 		//Alarms
 		this.handleActiveAlarm = this.handleActiveAlarm.bind(this)
@@ -60,6 +83,15 @@ class MainContainer extends React.Component {
 		this.showErrorModal = this.showErrorModal.bind(this)
 		this.handleErrorApi = this.handleErrorApi.bind(this)
 
+		//Sockets refresh funcs
+		this.rooms_refresh = this.rooms_refresh.bind(this)
+		this.devices_refresh = this.devices_refresh.bind(this)
+		this.cameras_refresh = this.cameras_refresh.bind(this)
+		this.scheduls_refresh = this.scheduls_refresh.bind(this)
+		this.inputs_refresh = this.inputs_refresh.bind(this)
+		this.alarmActive_refresh = this.alarmActive_refresh.bind(this)
+
+		//State
 		this.state = {
 			user: {},
 			rooms: [],
@@ -171,6 +203,53 @@ class MainContainer extends React.Component {
 				this.showErrorModal(error.mainErr, error.subErr, 'warning')
 		})
 	}
+
+	/*========================================
+	=            Sockets Handlers            =
+	========================================*/
+	
+	rooms_refresh() {
+		getRooms()
+			.then(rooms => { this.setState({rooms: rooms}) })
+			.catch(e => this.handleErrorApi(e))
+	}
+
+
+	devices_refresh() {
+		getDevices()
+			.then(devices => { this.setState({devices: devices}) })
+			.catch(e => this.handleErrorApi(e))
+	}
+
+
+	cameras_refresh() {
+		getCameras()
+			.then(cameras => { this.setState({cameras: cameras}) })
+			.catch(e => this.handleErrorApi(e))
+	}
+
+
+	scheduls_refresh() {
+		getSchedules()
+			.then(scheduls => { this.setState({scheduls: scheduls}) })
+			.catch(e => this.handleErrorApi(e))	
+	}
+
+
+	inputs_refresh() {
+		getInputs()
+			.then(inputs => { this.setState({inputs: inputs}) })
+			.catch(e => this.handleErrorApi(e))	
+	}
+
+
+	alarmActive_refresh() {
+		checkAlarmState()
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
+			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
+	}
+
+
 
 	/*============================================
 	=            Handlers / callbacks            =

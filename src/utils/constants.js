@@ -42,6 +42,27 @@ export default {
 			'image_path': {
 				'Validation len on image_path failed': {mainErr: 'Błąd dodania pomieszczenia', subErr: 'wybierz zdjęcie.'}
 			}
+		},
+		'putRoom': {
+			'name': {
+				'Validation len on name failed': {mainErr: 'Błąd edycji pomieszczenia', subErr: 'nieprawidłowa długość nazwy.'}
+			},
+			'image_path': {
+				'Validation len on image_path failed': {mainErr: 'Błąd edycji pomieszczenia', subErr: 'wybierz zdjęcie.'}
+			}
+		},
+		'postCamera': {
+			'name': {
+				'Validation len on name failed': {mainErr: 'Błąd dodania kamery', subErr: 'nieprawidłowa długość nazwy.'}
+			}
+		},
+		'postDevice': {
+			'input_id_UNIQUE': {
+				'input_id_UNIQUE must be unique': {mainErr: 'Błąd dodania urządzenia', subErr: 'wejście jest zajęte.'}
+			},
+			'name': {
+				'Validation len on name failed': {mainErr: 'Błąd dodania urządzenia', subErr: 'nieprawidłowa długość nazwy.'}
+			}
 		}
 	}
 
