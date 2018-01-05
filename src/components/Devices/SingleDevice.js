@@ -95,6 +95,11 @@ class DeviceLedCw extends React.Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		const numVal = this.hexToValue(nextProps.state.cw)
+		this.setState({value: numVal})
+	}
+
 	handleThrotledSave(val) {
 		let numVal, hexVal, cVal, wVal, cValHex, wValHex
 
@@ -134,9 +139,6 @@ class DeviceLedCw extends React.Component {
 	}
 
 	render() {
-
-		const numVal = this.hexToValue(this.props.state.cw)
-
 		return <div className="rangeWrapper">
 
 			<p className="rangeLabel rangeLabel_warm">Ciepłe</p>

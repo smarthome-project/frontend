@@ -88,7 +88,6 @@ class MainContainer extends React.Component {
 		this.devices_refresh = this.devices_refresh.bind(this)
 		this.cameras_refresh = this.cameras_refresh.bind(this)
 		this.scheduls_refresh = this.scheduls_refresh.bind(this)
-		this.inputs_refresh = this.inputs_refresh.bind(this)
 		this.alarmActive_refresh = this.alarmActive_refresh.bind(this)
 
 		//State
@@ -236,14 +235,6 @@ class MainContainer extends React.Component {
 		console.log("Refreshing schedule.")
 		getSchedules()
 			.then(scheduls => { this.setState({scheduls: scheduls}) })
-			.catch(e => this.handleErrorApi(e))	
-	}
-
-
-	inputs_refresh() {
-		console.log("Refreshing inputs.")
-		getInputs()
-			.then(inputs => { this.setState({inputs: inputs}) })
 			.catch(e => this.handleErrorApi(e))	
 	}
 
