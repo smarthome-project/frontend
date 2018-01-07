@@ -31,14 +31,16 @@ class Main extends React.Component {
 					<div className="container mainContainer">
 						<Switch>
 							<Redirect exact path="/" to="/rooms" />
-							<Route path="/rooms" render={ (props) => <RoomsGrid {...props} devices={this.props.devices} rooms={this.props.rooms} roomCallbacks={this.props.roomCallbacks} /> } />
-							<Route path="/monitoring" render={ (props) => <Monitoring {...props} cameras={this.props.cameras} rooms={this.props.rooms} camerasCallbacks={this.props.camerasCallbacks} /> } />
-							<Route path="/camera/:id" render={ (props) => <MonitoringVideo {...props} cameras={this.props.cameras} rooms={this.props.rooms} camerasCallbacks={this.props.camerasCallbacks} /> } />
-							<Route path="/devices" render={ (props) => <Devices {...props} devices={this.props.devices} rooms={this.props.rooms} inputs={this.props.inputs} deviceCallbacks={this.props.deviceCallbacks} /> } />
-							<Route path="/room/:id"  render={ (props) => <Room {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} roomCallbacks={this.props.roomCallbacks} /> } />
-							<Route path="/scheduler/add/:devId?"  render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
-							<Route path="/scheduler"  render={ (props) => <SchedulerList {...props} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
-							<Route path="/configuration"  render={ (props) => <Configuration {...props} /> } />
+							<Route path="/rooms" 					render={ (props) => <RoomsGrid {...props} devices={this.props.devices} rooms={this.props.rooms} roomCallbacks={this.props.roomCallbacks} /> } />
+							<Route path="/monitoring" 				render={ (props) => <Monitoring {...props} cameras={this.props.cameras} rooms={this.props.rooms} camerasCallbacks={this.props.camerasCallbacks} /> } />
+							<Route path="/camera/:id" 				render={ (props) => <MonitoringVideo {...props} cameras={this.props.cameras} rooms={this.props.rooms} camerasCallbacks={this.props.camerasCallbacks} /> } />
+							<Route path="/devices" 					render={ (props) => <Devices {...props} devices={this.props.devices} rooms={this.props.rooms} inputs={this.props.inputs} deviceCallbacks={this.props.deviceCallbacks} /> } />
+							<Route path="/room/:id"  				render={ (props) => <Room {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} roomCallbacks={this.props.roomCallbacks} /> } />
+							<Route path="/scheduler/dev/:devId?"  	render={ (props) => <SchedulerList {...props} devices={this.props.devices} rooms={this.props.rooms} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
+							<Route path="/scheduler/room/:roomId?"  render={ (props) => <SchedulerList {...props} devices={this.props.devices} rooms={this.props.rooms} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
+							<Route path="/scheduler/add/:devId?"  	render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
+							<Route path="/scheduler"  				render={ (props) => <SchedulerList {...props} devices={this.props.devices} rooms={this.props.rooms} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
+							<Route path="/configuration"  			render={ (props) => <Configuration {...props} /> } />
 						</Switch>
 					</div>
 				</div>

@@ -37,7 +37,7 @@ class SingleCam extends React.Component {
 			</h2>
 
 		return (
-				<Col xs={6} sm={6} md={4} lg={4}>
+				<Col xs={12} sm={6} md={4} lg={4}>
 					<Panel header={title}>
 						<Row>
 							<Col xs={9}>

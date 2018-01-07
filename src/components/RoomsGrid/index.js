@@ -21,7 +21,7 @@ class RoomPanel extends React.Component {
 		let img_url = require(`../../assets/images/usable/${roomObj.image_path}`)
 
 		return (
-				<Col xs={6} sm={6} md={4} lg={4}>
+				<Col xs={12} sm={6} md={4} lg={4}>
 					<Panel>
 						<Link to={"/room/" + roomObj.id} >
 							<div className="crop-img">

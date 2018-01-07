@@ -27,7 +27,7 @@ class WizzardFormTime extends React.Component {
 			this.props.callbacks.change('every_hh', 1)
 			this.props.callbacks.change('every_mm', 1)
 			this.props.callbacks.change('hours', ['*'])
-			this.props.callbacks.change('min', ['*'])
+			this.props.callbacks.change('min', ['0'])
 		}
 
 		if (value == consts.CRON_TIME_EVERY_MM) {
@@ -43,14 +43,9 @@ class WizzardFormTime extends React.Component {
 			this.props.callbacks.change('min', ['00'])
 		}
 
-		if (value == consts.CRON_TIME_SPECIFIC) {
-			this.props.callbacks.change('hours', ['*'])
-			this.props.callbacks.change('min', ['*'])
-		}
-
 		if (field == 'every_hh') {
 			let cronHH = [`*/${value}`]
-			this.props.callbacks.change('min', ['*'])
+			this.props.callbacks.change('min', ['0'])
 			this.props.callbacks.change('hours', cronHH)
 		}
 

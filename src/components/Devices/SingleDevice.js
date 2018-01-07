@@ -205,7 +205,7 @@ class SingleDevice extends React.Component {
 					<a className="pull-right deviceActionHeader" onClick={this.handleOpenEdit.bind(this)}>
 						<Icon name="pencil" size={1} fw />
 					</a>
-					<Link className="pull-right deviceActionHeader" to={`/scheduler/add/${device.id}`} >
+					<Link className="pull-right deviceActionHeader" to={`/scheduler/dev/${device.id}`} >
 						<Icon name="calendar" size={1} fw />
 					</Link>
 				</span>
@@ -229,7 +229,7 @@ class SingleDevice extends React.Component {
 		}
 
 		return (device) ? (
-			<Col xs={6} sm={4} md={4} lg={3}>
+			<Col xs={12} sm={6} md={4} lg={3}>
 				<Panel header={title}>
 					<span className="deviceName">{device.name}</span>
 					{controllBody}

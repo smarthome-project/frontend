@@ -155,7 +155,7 @@ class CronSchedule {
 			let hours = cronData[1]
 			let days = cronData[4]
 
-			const regEx_cronInterval = new RegExp("^(\\*/\\d)$")
+			const regEx_cronInterval = new RegExp("^(\\*/\\d{1,2})$")
 			const regEx_cronSpecific = new RegExp("^(\\d{1,2})$")
 
 			let scheduleString = ""
@@ -197,9 +197,9 @@ class CronSchedule {
 
 				scheduleString += "co minutę."
 
-			} else if ( (hours == "*" || hours == "*/1") && regEx_cronInterval.test(mins) ) { // */x * => Co x godzin
+			} else if ( (hours == "*" || hours == "*/1") && regEx_cronInterval.test(mins) ) { // */x * => Co x minut
 
-				let x = (hours.split('/'))[1]
+				let x = (mins.split('/'))[1]
 				scheduleString += `co ${x} min.`
 
 			} else if (hours.indexOf(',') !== -1) { // 0 x,y,z => W wybrane godziny

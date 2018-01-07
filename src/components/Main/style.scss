@@ -26,3 +26,17 @@ a {
 	color: inherit;
 	text-decoration: inherit;
 }
+
+.addButton {
+	color: rgba(40,40,40, 0.5);
+	font-size: 24px;
+	width: 40px;
+	height: 40px;
+	padding: 3px;
+	box-sizing: border-box;
+
+	i {
+		width: 24px;
+		height: 24px;
+	}
+}
