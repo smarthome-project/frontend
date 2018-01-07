@@ -20,8 +20,8 @@ class Devices extends React.Component {
 		super(props)
 
 		this.openModal = this.openModal.bind(this)
-		this.openEdit = this.openEdit.bind(this)
 		this.closeModal = this.closeModal.bind(this)
+		this.openEdit = this.openEdit.bind(this)
 		this.closeEdit = this.closeEdit.bind(this)
 
 		this.state = {

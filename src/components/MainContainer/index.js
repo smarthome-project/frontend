@@ -19,7 +19,7 @@ import {
 import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
 import { getInputs } from '../../services/ApiInputs'
-import { getRooms, createRooms } from '../../services/ApiRooms'
+import { getRooms, createRooms, updateRoom, removeRoom } from '../../services/ApiRooms'
 import { getDevices, createDevice, changeStateDevice, updateDevice, removeDevice } from '../../services/ApiDevices'
 import { getCameras, createCamera, updateCamera, removeCamera } from '../../services/ApiCameras'
 import { getSchedules, setSchedule, removeSchedule } from '../../services/ApiScheduls'
@@ -71,6 +71,7 @@ class MainContainer extends React.Component {
 		this.handleChangeStateDevice = this.handleChangeStateDevice.bind(this)
 		this.handleUpdateCamera = this.handleUpdateCamera.bind(this)
 		this.handleUpdateDevice = this.handleUpdateDevice.bind(this)
+		this.handleUpdateRoom = this.handleUpdateRoom.bind(this)
 
 		//ThrottledUploaders
 		this.uploadNewDeviceState = _.debounce(this.uploadNewDeviceState.bind(this), 300)
@@ -79,6 +80,7 @@ class MainContainer extends React.Component {
 		this.handleRemoveCamera = this.handleRemoveCamera.bind(this)
 		this.handleRemoveDevice = this.handleRemoveDevice.bind(this)
 		this.handleRemoveSchedule = this.handleRemoveSchedule.bind(this)
+		this.handleRemoveRoom = this.handleRemoveRoom.bind(this)
 
 		//Misc
 		this.showErrorModal = this.showErrorModal.bind(this)
@@ -279,6 +281,39 @@ class MainContainer extends React.Component {
 			.catch(e => { this.handleErrorApi('postRoom', e); /* this.props.history.push('/login', null) */ })
 	}
 
+	handleUpdateRoom(room) {
+		updateRoom(room)
+			.then(changedRoom => { 
+				const roomIndex = _.findIndex(this.state.rooms, r => r.id == room.id)
+				
+				this.setState(
+					update(this.state, {
+						rooms: {
+							[roomIndex]: {
+								$set: changedRoom
+							}
+						}
+					})
+				)
+			})
+			.catch(e => { this.handleErrorApi('putRoom', e); /* this.props.history.push('/login', null) */ })
+	}
+
+	handleRemoveRoom(roomId) {
+		removeRoom(roomId)
+			.then(resp => { 
+				const roomIndex = _.findIndex(this.state.rooms, d => d.id == roomId)
+				this.setState(
+					update(this.state, {
+						rooms: {
+							$splice: [[roomIndex, 1]]
+						}
+					})
+				)
+			})
+			.catch(e => { this.handleErrorApi('deleteRoom', e); /* this.props.history.push('/login', null) */ })
+	}
+
 	//Devices
 	handleAddDevice(device) {
 		createDevice(device)
@@ -451,7 +486,9 @@ class MainContainer extends React.Component {
 				cameras={this.state.cameras}
 				scheduls={this.state.scheduls}
 				roomCallbacks={{
-					handleAddRoom: this.handleAddRoom
+					handleAddRoom: this.handleAddRoom,
+					handleUpdateRoom: this.handleUpdateRoom,
+					handleRemoveRoom: this.handleRemoveRoom
 				}}
 				deviceCallbacks={{
 					handleAddDevice: this.handleAddDevice,

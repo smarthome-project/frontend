@@ -65,3 +65,57 @@ export const createRooms = (room) => {
 			})
 	})
 }
+
+export const updateRoom = (room) => {
+	return new Promise((resolve, reject) => {
+		fetch(`${API_URL}/api/rooms/${room.id}`, {
+			headers: API_HEADER(),
+			mode: 'cors',
+			method: 'PUT',
+			body: JSON.stringify(room)
+		})
+			.then(resp => {
+				if (resp.status === 200) {
+					const body = resp.json() || []
+					resolve(body)
+				} else {
+					reject(resp)
+				}
+			})
+			.catch(e => { 
+				//localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
+
+				console.log(e)
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject(e) 
+			})
+	})
+}
+
+export const removeRoom = (roomId) => {
+	return new Promise((resolve, reject) => {
+		fetch(`${API_URL}/api/rooms/${roomId}`, {
+			headers: API_HEADER(),
+			mode: 'cors',
+			method: 'DELETE'
+		})
+			.then(resp => {
+				if (resp.status === 204) {
+					resolve(roomId)
+				} else {
+					reject(resp)
+				}
+			})
+			.catch(e => { 
+				localStorage.removeItem(consts.LOCALSTORAGE_TOKEN)
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject(e) 
+			})
+	})
+}

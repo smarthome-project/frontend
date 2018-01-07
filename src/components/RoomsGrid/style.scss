@@ -56,6 +56,22 @@
 				border-top-right-radius: 3px;
 				border-bottom-left-radius: 8px;
 			}
+
+			.edit__button {
+				cursor: pointer;
+				position: absolute;
+				z-index: 999;
+				left: 0; bottom: 0;
+				background-color: rgba(0,0,0, 0.6);
+				width: 30px;
+				height: 30px;
+				line-height: 30px;
+				text-align: center;
+				font-size: 15px;
+				color: #DDD;
+				border-top-right-radius: 8px;
+				border-bottom-left-radius: 3px;
+			}
 		}
 	}
 }

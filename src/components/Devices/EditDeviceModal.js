@@ -94,7 +94,7 @@ class EditDeviceModal extends React.Component {
 		return (
 			<Modal show={this.props.showModal} onHide={this.handleClose}>
 				<Modal.Header closeButton>
-					<Modal.Title>Dodawanie urządzenia</Modal.Title>
+					<Modal.Title>Edycja urządzenia</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<DeviceForm 
