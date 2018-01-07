@@ -44,13 +44,39 @@ class WizzardFormTime extends React.Component {
 		}
 
 		if (field == 'every_hh') {
-			let cronHH = [`*/${value}`]
+
+			value = Number(value)
+			value = _.toSafeInteger(value * 1)
+			value = (value < 1) ? 1 : value
+			value = (value > 23) ? 23 : value
+
+			if (!_.isSafeInteger(value)) {
+				this.props.callbacks.change('min', ['0'])
+				this.props.callbacks.change('hours', null)
+				this.props.callbacks.change(field, '')
+				return
+			}
+
+			let cronHH = [`*/${Number(value)}`]
 			this.props.callbacks.change('min', ['0'])
 			this.props.callbacks.change('hours', cronHH)
 		}
 
 		if (field == 'every_mm') {
-			let cronMM = [`*/${value}`]
+			
+			value = Number(value)
+			value = _.toSafeInteger(value * 1)
+			value = (value < 1) ? 1 : value
+			value = (value > 59) ? 59 : value
+
+			if (!_.isSafeInteger(value)) {
+				this.props.callbacks.change('min', null)
+				this.props.callbacks.change('hours', ['*'])
+				this.props.callbacks.change(field, '')
+				return
+			}
+
+			let cronMM = [`*/${Number(value)}`]
 			this.props.callbacks.change('min', cronMM)
 			this.props.callbacks.change('hours', ['*'])
 		}
