@@ -19,6 +19,7 @@ import InfoScreen from '../InfoScreen'
 import RoomsGrid from '../RoomsGrid'
 import SchedulerList from '../Scheduler/SchedulerList'
 import SchedulerAdd from '../Scheduler/SchedulerAdd'
+import SchedulerEdit from '../Scheduler/SchedulerEdit'
 import Configuration from '../Configuration'
 
 class Main extends React.Component {
@@ -38,7 +39,7 @@ class Main extends React.Component {
 							<Route path="/room/:id"  				render={ (props) => <Room {...props} devices={this.props.devices} rooms={this.props.rooms} deviceCallbacks={this.props.deviceCallbacks} roomCallbacks={this.props.roomCallbacks} /> } />
 							<Route path="/scheduler/dev/:devId?"  	render={ (props) => <SchedulerList {...props} devices={this.props.devices} rooms={this.props.rooms} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
 							<Route path="/scheduler/room/:roomId?"  render={ (props) => <SchedulerList {...props} devices={this.props.devices} rooms={this.props.rooms} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
-							<Route path="/scheduler/add/:devId?"  	render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks}/> } />
+							<Route path="/scheduler/add/:devId?"  	render={ (props) => <SchedulerAdd {...props} devices={this.props.devices} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
 							<Route path="/scheduler"  				render={ (props) => <SchedulerList {...props} devices={this.props.devices} rooms={this.props.rooms} scheduls={this.props.scheduls} scheduleCallbacks={this.props.scheduleCallbacks} /> } />
 							<Route path="/configuration"  			render={ (props) => <Configuration {...props} /> } />
 						</Switch>

@@ -22,7 +22,7 @@ import { getInputs } from '../../services/ApiInputs'
 import { getRooms, createRooms } from '../../services/ApiRooms'
 import { getDevices, createDevice, changeStateDevice, updateDevice, removeDevice } from '../../services/ApiDevices'
 import { getCameras, createCamera, updateCamera, removeCamera } from '../../services/ApiCameras'
-import { getSchedules, setSchedule } from '../../services/ApiScheduls'
+import { getSchedules, setSchedule, removeSchedule } from '../../services/ApiScheduls'
 
 
 class MainContainer extends React.Component {
@@ -78,6 +78,7 @@ class MainContainer extends React.Component {
 		//Remove
 		this.handleRemoveCamera = this.handleRemoveCamera.bind(this)
 		this.handleRemoveDevice = this.handleRemoveDevice.bind(this)
+		this.handleRemoveSchedule = this.handleRemoveSchedule.bind(this)
 
 		//Misc
 		this.showErrorModal = this.showErrorModal.bind(this)
@@ -419,6 +420,21 @@ class MainContainer extends React.Component {
 			.catch(e => { this.handleErrorApi('postSchedule', e); /* this.props.history.push('/login', null) */ })
 	}
 
+	handleRemoveSchedule(scheduleId) {
+		removeSchedule(scheduleId)
+			.then(resp => { 
+				const scheduleIndex = _.findIndex(this.state.scheduls, s => s.id == scheduleId)
+				this.setState(
+					update(this.state, {
+						scheduls: {
+							$splice: [[scheduleIndex, 1]]
+						}
+					})
+				)
+			})
+			.catch(e => { this.handleErrorApi('deleteDevice', e); /* this.props.history.push('/login', null) */ })
+	}
+
 	/*==============================
 	=            Render            =
 	==============================*/
@@ -452,7 +468,8 @@ class MainContainer extends React.Component {
 					handleActiveAlarm: this.handleActiveAlarm
 				}}
 				scheduleCallbacks={{
-					handleAddSchedule: this.handleAddSchedule
+					handleAddSchedule: this.handleAddSchedule,
+					handleRemoveSchedule: this.handleRemoveSchedule
 				}} />
 		)
 	}

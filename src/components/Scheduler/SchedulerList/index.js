@@ -19,6 +19,7 @@ class SchedulerList extends React.Component {
 
 		this.filterSchedules = this.filterSchedules.bind(this)
 		this.handleChangeFilte = this.handleChangeFilte.bind(this)
+		this.handleRemoveSchedule = this.handleRemoveSchedule.bind(this)
 
 		const filterDev = (this.props.match.params.devId && _.isNumber(this.props.match.params.devId)) ? 
 			Number(this.props.match.params.devId) : 0
@@ -240,10 +241,11 @@ class SchedulerList extends React.Component {
 	}
 
 	getActions(scheduleId) {
+		const schedId = Number(scheduleId)
 		return <span className="schedulerActions">
-			<a scheid={scheduleId}>
-				<Icon name="pencil" size={1} fw /> <span>Edytuj</span>
-			</a>
+			<span className="removeScheduleButton" onClick={this.handleRemoveSchedule.bind(null, schedId)}>
+				<Icon name="remove" size={1} fw /> <span>Usuń</span>
+			</span>
 		</span>
 	}
 
@@ -296,6 +298,10 @@ class SchedulerList extends React.Component {
 		})
 
 		return actionString
+	}
+
+	handleRemoveSchedule(schedId) {
+		this.props.scheduleCallbacks.handleRemoveSchedule(schedId)
 	}
 
 	render () {
@@ -385,7 +391,8 @@ class SchedulerList extends React.Component {
 SchedulerList.propTypes = {
 	rooms: PropTypes.array,
 	devices: PropTypes.array,
-	scheduls: PropTypes.array
+	scheduls: PropTypes.array,
+	scheduleCallbacks: PropTypes.object
 }
 
 export default SchedulerList
