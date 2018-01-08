@@ -19,7 +19,6 @@ import InfoScreen from '../InfoScreen'
 import RoomsGrid from '../RoomsGrid'
 import SchedulerList from '../Scheduler/SchedulerList'
 import SchedulerAdd from '../Scheduler/SchedulerAdd'
-import SchedulerEdit from '../Scheduler/SchedulerEdit'
 import Configuration from '../Configuration'
 
 class Main extends React.Component {
