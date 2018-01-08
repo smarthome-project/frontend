@@ -34,3 +34,19 @@ export const getImages = () => {
 			})
 	})
 }
+
+export const getSensors = () => {
+	return new Promise((resolve, reject) => {
+
+		fetch(`${API_URL}/api/sensors`, {
+			headers: API_HEADER(),
+			method: 'GET'
+		})
+			.then(resp => {
+				resolve(true)
+			})
+			.catch(e => {
+				reject(e) 
+			})
+	})
+}

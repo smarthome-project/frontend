@@ -44,7 +44,7 @@ class Main extends React.Component {
 						</Switch>
 					</div>
 				</div>
-			) : <InfoScreen key="infoScreen" />
+			) : <InfoScreen sensors={this.props.sensors} key="infoScreen" />
 
 		return (
 			<div>
@@ -73,6 +73,7 @@ Main.propTypes = {
 	devices: PropTypes.array,
 	cameras: PropTypes.array,
 	scheduls: PropTypes.array,
+	sensors: PropTypes.object,
 	roomCallbacks: PropTypes.object,
 	deviceCallbacks: PropTypes.object,
 	camerasCallbacks: PropTypes.object,

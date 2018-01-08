@@ -16,6 +16,7 @@ import {
 	addEventUserActive, 
 	delEventUserActive } from '../../utils/utils'
 
+import { getSensors } from '../../services/ApiUtils'
 import { checkAlarmState, updateAlarmState } from '../../services/ApiAlarms'
 import { checkToken } from '../../services/ApiAuth'
 import { getInputs } from '../../services/ApiInputs'
@@ -51,6 +52,8 @@ class MainContainer extends React.Component {
 		this.socket.on('camera:delete', refresh => this.cameras_refresh())
 		this.socket.on('schedul:delete', refresh => this.scheduls_refresh())
 		this.socket.on('alarmActive:delete', refresh => this.alarmActive_refresh())
+
+		this.socket.on('sensors', data => this.handleSensorsData(data))
 
 		//Alarms
 		this.handleActiveAlarm = this.handleActiveAlarm.bind(this)
@@ -92,6 +95,7 @@ class MainContainer extends React.Component {
 		this.cameras_refresh = this.cameras_refresh.bind(this)
 		this.scheduls_refresh = this.scheduls_refresh.bind(this)
 		this.alarmActive_refresh = this.alarmActive_refresh.bind(this)
+		this.handleSensorsData = this.handleSensorsData.bind(this)
 
 		//State
 		this.state = {
@@ -101,6 +105,7 @@ class MainContainer extends React.Component {
 			cameras: [],
 			scheduls: [],
 			inputs: [],
+			sensors: {},
 			alarmActive: false,
 			appState: consts.STATE_ACTIVE
 		}
@@ -145,6 +150,10 @@ class MainContainer extends React.Component {
 
 		addEventUserActive(this._handleActivity)
 		this.resetInactiveTimer()
+
+		getSensors()
+			.then(r => console.log(r))
+			.catch(e => this.handleErrorApi(e))
 	}
 
 	componentWillUnmount() {
@@ -249,6 +258,16 @@ class MainContainer extends React.Component {
 			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
 	}
 
+	handleSensorsData(data) {
+		console.log("New sensors data.", data)
+		
+		let temp = data.temp
+		let humi = data.humi
+
+		console.log(temp, humi)
+
+		this.setState({sensors: {temp: temp, humi: humi}})
+	}
 
 
 	/*============================================
@@ -485,6 +504,7 @@ class MainContainer extends React.Component {
 				devices={this.state.devices}
 				cameras={this.state.cameras}
 				scheduls={this.state.scheduls}
+				sensors={this.state.sensors}
 				roomCallbacks={{
 					handleAddRoom: this.handleAddRoom,
 					handleUpdateRoom: this.handleUpdateRoom,

@@ -64,7 +64,6 @@ class LockScreen extends React.Component {
 	}
 
 	render() {
-
 		let showingKeyboard = (
 				<div key="keyboard" className="keyboardDiv">
 					<input 
