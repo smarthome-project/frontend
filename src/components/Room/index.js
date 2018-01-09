@@ -28,6 +28,7 @@ class Room extends React.Component {
 						}}
 						devices={this.props.devices} 
 						rooms={this.props.rooms}
+						inputs={this.props.inputs}
 						deviceCallbacks={this.props.deviceCallbacks} />
 				</div>
 			</div>
@@ -39,6 +40,7 @@ class Room extends React.Component {
 Room.propTypes = {
 	rooms: PropTypes.array,
 	devices: PropTypes.array,
+	inputs: PropTypes.array,
 	deviceCallbacks: PropTypes.object
 }
 
