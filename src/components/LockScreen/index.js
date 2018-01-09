@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import PropTypes from 'prop-types'
 import update from 'react-addons-update'
+import _ from 'lodash'
 import { CSSTransitionGroup } from 'react-transition-group'
 import LockScreenStyle from './style.scss'
 import { updateAlarmState } from '../../services/ApiAlarms'
@@ -11,11 +12,16 @@ class KeyboardButton extends React.Component {
 	render() {
 		const { buttonValue } = {...this.props}
 
+		const buttonText = (buttonValue == "back")? 
+			"\u232b " : (buttonValue == "disabled") ? 
+			`.` : buttonValue
+
 		return (
 			<button 
 				className="keyboard__button"
+				disabled={buttonValue == "disabled"}
 				onClick={this.props.clickHandler.bind(null, buttonValue)} >
-				{buttonValue}
+				{buttonText}
 			</button>
 		)
 	}
@@ -43,19 +49,21 @@ class LockScreen extends React.Component {
 
 	handleTryUnlock() {
 		const pin = this.state.pinCode
-		if (pin == "7436") {
-			updateAlarmState(false)
-				.then(alarmStatus => { this.props.handleCheckNewAlarmState() })
-				.catch(e => { console.log(e) })
-		} else {
-			//TODO ALARM
-		}
+		updateAlarmState(false, pin)
+			.then(alarmStatus => { this.props.handleCheckNewAlarmState() })
+			.catch(e => { console.log(e) })
 	}
 
 	handleButtonPin(val) {
-		let nextPinCode = this.state.pinCode + val
-		if (_.size(nextPinCode) <= 8)
-			this.setState({pinCode: nextPinCode})
+		if (val == 'back') {
+			let nextPinCode = (_.size(this.state.pinCode) > 0)? (this.state.pinCode).substr(0, _.size(this.state.pinCode) - 1) : ""
+			if (_.size(nextPinCode) <= 8)
+				this.setState({pinCode: nextPinCode})
+		} else {
+			let nextPinCode = this.state.pinCode + val
+			if (_.size(nextPinCode) <= 8)
+				this.setState({pinCode: nextPinCode})
+		}
 	}
 
 	handleShowPin(show) {
@@ -85,7 +93,9 @@ class LockScreen extends React.Component {
 						<KeyboardButton buttonValue="8" clickHandler={this.handleButtonPin} />
 						<KeyboardButton buttonValue="9" clickHandler={this.handleButtonPin} />
 						<br />
+						<KeyboardButton buttonValue="back" clickHandler={this.handleButtonPin} />
 						<KeyboardButton buttonValue="0" clickHandler={this.handleButtonPin} />
+						<KeyboardButton buttonValue="disabled" clickHandler={this.handleButtonPin} />
 					</div>
 					<br />
 					<div className="keyboard__footer">

@@ -125,7 +125,7 @@ class MainContainer extends React.Component {
 			.catch(e => { this.props.history.push('/login', null) })
 
 		checkAlarmState()
-			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
 			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
 
 		getRooms()
@@ -152,7 +152,7 @@ class MainContainer extends React.Component {
 		this.resetInactiveTimer()
 
 		getSensors()
-			.then(r => console.log(r))
+			.then(r => null)
 			.catch(e => this.handleErrorApi(e))
 	}
 
@@ -161,10 +161,10 @@ class MainContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.alarmActive !== this.state.alarmActive)
-			updateAlarmState(this.state.alarmActive)
-				.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
-				.catch(e => { this.handleErrorApi(e); this.props.history.push('/login', null) })
+		// if (prevState.alarmActive !== this.state.alarmActive)
+		// 	updateAlarmState(this.state.alarmActive)
+		// 		.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
+		// 		.catch(e => { this.handleErrorApi(e); this.props.history.push('/login', null) })
 	}
 
 	resetInactiveTimer() {
@@ -194,6 +194,8 @@ class MainContainer extends React.Component {
 	}
 	
 	handleErrorApi(form, e) {
+		console.log("Error: ", form, e)
+		
 		const response = e.json()
 		response.then(err => {
 			
@@ -254,7 +256,7 @@ class MainContainer extends React.Component {
 	alarmActive_refresh() {
 		console.log("Refreshing alarmActive.")
 		checkAlarmState()
-			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
 			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
 	}
 
@@ -278,7 +280,7 @@ class MainContainer extends React.Component {
 
 	handleCheckNewAlarmState() {
 		checkAlarmState()
-			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
 			.catch(e => { this.handleErrorApi('setAlarm', e); /* this.props.history.push('/login', null) */ })
 	}
 

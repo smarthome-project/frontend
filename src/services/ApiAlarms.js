@@ -19,13 +19,13 @@ function handleErrors(resp) {
 
 export const checkAlarmState = () => {
 	return new Promise((resolve, reject) => {
-		fetch(`${API_URL}/api/alarm`, {
+		fetch(`${API_URL}/api/alarms`, {
 			headers: API_HEADER(),
 			method: 'GET'
 		})
 			.then(resp => resp.json())
 			.then(body => {
-				const alarmStatus = (body.alarmStatus) ? true : false
+				const alarmStatus = (body.secured) ? true : false
 				resolve(alarmStatus)
 			})
 			.catch(e => { 
@@ -34,19 +34,32 @@ export const checkAlarmState = () => {
 	})
 }
 
-export const updateAlarmState = (newState) => {
+export const updateAlarmState = (secured, pin) => {
 	return new Promise((resolve, reject) => {
-		fetch(`${API_URL}/api/alarm/${newState}`, {
+		fetch(`${API_URL}/api/alarms/1`, {
 			headers: API_HEADER(),
-			method: 'GET'
+			mode: 'cors',
+			method: 'PUT',
+			body: JSON.stringify({
+				secured: secured,
+				pin: pin
+			})
 		})
-			.then(resp => resp.json())
-			.then(body => {
-				const alarmStatus = (body.alarmStatus) ? true : false
-				resolve(alarmStatus)
+			.then(resp => {
+				if (resp.status === 200) {
+					const body = resp.json() || []
+					resolve(body)
+				} else {
+					reject(resp)
+				}
 			})
 			.catch(e => { 
-				reject("Server error.", e) 
+				console.log(e)
+
+				if (e.message == 'NetworkError when attempting to fetch resource.')
+					reject('server-down')
+				else
+					reject(e) 
 			})
 	})
 }
