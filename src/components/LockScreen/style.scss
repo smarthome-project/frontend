@@ -6,6 +6,32 @@
 	background-color: #333;
 	overflow: hidden;
 
+	#alertsMountPlace_lockscreen {
+		
+		float: left;
+		z-index: 99999;
+
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+
+		text-align: center;
+
+		.alert {
+			opacity: 1;
+
+			-webkit-transition: all 1s linear;
+			-moz-transition: all 1s linear;
+			-o-transition: all 1s linear;
+			transition: all 1s linear;
+		}
+
+		.hide {
+			opacity: 0;	
+		}
+	}
+
 	.padlockDiv {
 		text-align: center;
 		height: 100vh;

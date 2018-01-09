@@ -25,7 +25,8 @@ export const checkAlarmState = () => {
 		})
 			.then(resp => resp.json())
 			.then(body => {
-				const alarmStatus = (body.secured) ? true : false
+				console.log(body)
+				const alarmStatus = (body[0].secured) ? true : false
 				resolve(alarmStatus)
 			})
 			.catch(e => { 

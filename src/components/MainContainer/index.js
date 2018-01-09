@@ -125,8 +125,8 @@ class MainContainer extends React.Component {
 			.catch(e => { this.props.history.push('/login', null) })
 
 		checkAlarmState()
-			.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
-			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
+			.catch(e => { this.handleErrorApi('setAlarm', e); /* this.props.history.push('/login', null) */ })
 
 		getRooms()
 			.then(rooms => { this.setState({rooms: rooms}) })
@@ -280,12 +280,22 @@ class MainContainer extends React.Component {
 
 	handleCheckNewAlarmState() {
 		checkAlarmState()
-			.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
 			.catch(e => { this.handleErrorApi('setAlarm', e); /* this.props.history.push('/login', null) */ })
 	}
 
 	handleActiveAlarm() {
+
 		this.setState({alarmActive: true})
+
+		updateAlarmState(true)
+			.then(alarmStatus => { 
+				this.handleCheckNewAlarmState() 
+			})
+			.catch(e => { 
+				this.setState({alarmActive: false})
+				console.log(e) 
+			})
 	}
 
 	//Users

@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { CSSTransitionGroup } from 'react-transition-group'
 import LockScreenStyle from './style.scss'
 import { updateAlarmState } from '../../services/ApiAlarms'
+import { Alert } from 'react-bootstrap'
 
 class KeyboardButton extends React.Component {
 
@@ -47,11 +48,30 @@ class LockScreen extends React.Component {
 		}
 	}
 
+	showErrorModal(mainErr, subErr, type, time = 3000) {
+
+		const alertInstance = (
+			<Alert bsStyle={type}>
+				<strong>{mainErr}</strong> {subErr}
+			</Alert>
+		)
+
+		ReactDom.render(alertInstance, document.getElementById('alertsMountPlace_lockscreen'))
+		setTimeout(function() {
+			ReactDom.render(null, document.getElementById('alertsMountPlace_lockscreen'))
+		}, time)
+	}
+
 	handleTryUnlock() {
 		const pin = this.state.pinCode
 		updateAlarmState(false, pin)
 			.then(alarmStatus => { this.props.handleCheckNewAlarmState() })
-			.catch(e => { console.log(e) })
+			.catch(e => { 
+				console.log(e) 
+				this.showErrorModal("Błędny PIN", "", "warning", 2000)
+			})
+
+		this.setState({pinCode: ""})
 	}
 
 	handleButtonPin(val) {
@@ -115,6 +135,8 @@ class LockScreen extends React.Component {
 
 		return (
 				<div className="lockScreen__wrapper">
+
+					<div id="alertsMountPlace_lockscreen"></div>
 
 					<CSSTransitionGroup
 						transitionName="padlockTransition"

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Redirect } from 'react-router-dom'
 import _ from 'lodash'
 
-import logoImg from '../../assets/images/logo.png'
+import logoImg from '../../assets/images/logo_smarthome.png'
 
 import consts from '../../utils/constants'
 import { checkToken, getToken } from '../../services/ApiAuth'
