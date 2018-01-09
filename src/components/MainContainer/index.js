@@ -33,7 +33,7 @@ class MainContainer extends React.Component {
 
 		//Sockets:
 		this.socket = io(`http://${location.hostname}:${_config.serverPort}`)
-		this.socket.on('connect', () => console.log('Socket connected.'))
+		this.socket.on('connect', () => {})
 
 		this.socket.on('room:post', refresh => this.rooms_refresh())
 		this.socket.on('device:post', refresh => this.devices_refresh())

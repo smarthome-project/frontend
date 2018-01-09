@@ -25,7 +25,6 @@ export const checkAlarmState = () => {
 		})
 			.then(resp => resp.json())
 			.then(body => {
-				console.log(body)
 				const alarmStatus = (body[0].secured) ? true : false
 				resolve(alarmStatus)
 			})
