@@ -256,7 +256,7 @@ class MainContainer extends React.Component {
 	alarmActive_refresh() {
 		console.log("Refreshing alarmActive.")
 		checkAlarmState()
-			.then(alarmStatus => { this.setState({alarmActive: alarmStatus.secured}) })
+			.then(alarmStatus => { this.setState({alarmActive: alarmStatus}) })
 			.catch(e => { this.handleErrorApi(e); /* this.props.history.push('/login', null) */ })
 	}
 
